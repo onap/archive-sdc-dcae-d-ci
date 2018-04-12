@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Suite">
+  <test name="Test">
+    <classes>
+      <class name="com.att.ecomp.dcae.ci.api.healthcheck.HealthcheckTest"></class>
+      <class name="com.att.ecomp.dcae.ci.api.tests.blueprint.SaveCompositionPositve"></class>
+      <class name="com.att.ecomp.dcae.ci.api.tests.composition.CompositionControllerApiTests"></class>
+      <class name="com.att.ecomp.dcae.ci.api.tests.composition.CompositionElementsControllerTests"></class>
+      <class name="com.att.ecomp.dcae.ci.api.tests.composition.CompositionMicroServicesApiTests"></class>
+      <class name="com.att.ecomp.dcae.ci.api.tests.composition.GetCompositionControllerTests"></class>
+      <class name="com.att.ecomp.dcae.ci.api.tests.composition.SaveAndSubmitCompositionFullFlowTest"></class>
+      <class name="com.att.ecomp.dcae.ci.api.tests.lifeCycle.PutCheckin"></class>
+      <class name="com.att.ecomp.dcae.ci.api.tests.lifeCycle.PutCheckout"></class>
+      <class name="com.att.ecomp.dcae.ci.api.tests.ruleEditor.GetDefinitionTest"></class>
+      <class name="com.att.ecomp.dcae.ci.api.tests.ruleEditor.GetListEventsAndVersionsTest"></class>
+      <class name="com.att.ecomp.dcae.ci.api.tests.ruleEditor.RuleEditorControllerTest"></class>
+      <class name="com.att.ecomp.dcae.ci.api.tests.services.attachment.GetAttachment"></class>
+      <class name="com.att.ecomp.dcae.ci.api.tests.services.attachment.PostAttachment"></class>
+      <class name="com.att.ecomp.dcae.ci.api.tests.services.instance.GetServiceInstanceNagative"></class>
+      <class name="com.att.ecomp.dcae.ci.api.tests.services.instance.GetServiceInstancePositive"></class>
+      <class name="com.att.ecomp.dcae.ci.api.tests.services.list.GetAllServicesNagative"></class>
+      <class name="com.att.ecomp.dcae.ci.api.tests.services.list.GetAllServicesPositive"></class>
+      <class name="com.att.ecomp.dcae.ci.api.tests.vfcmt.CreateVfcmt"></class>
+      <class name="com.att.ecomp.dcae.ci.api.tests.vfcmt.GetAllVfcmts"></class>
+      <class name="com.att.ecomp.dcae.ci.api.tests.vfcmt.VfcmtCreationFlow"></class>
+      <class name="com.att.ecomp.dcae.ci.api.tests.vfcmt.CreateMonitoringComponent"></class>
+      <class name="com.att.ecomp.dcae.ci.api.tests.vfcmt.GetVfcmtsForMigration"></class>
+    </classes>
+  </test> <!-- Test -->
+</suite> <!-- Suite -->

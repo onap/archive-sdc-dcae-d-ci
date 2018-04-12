@@ -1,0 +1,28 @@
+dcaeBeHost: http://localhost
+dcaeBePort: 8080
+#dcaeBePort: 8446 --> [in local PC testing] 8080 --> [in remote CI]
+beHost: https://zldcrdm2sdc4cbe01.3f1a87.rdm2.tci.att.com
+bePort: 8443
+feHost: 127.0.0.1
+fePort: 8181
+ruleEditorUrl: http://localhost:4200
+#apiPath: "/dcae"  --> [in local PC testing]
+apiPath: ""
+url: https://www.e-access.att.com/DCAE-CIO1/sdc1/portal
+remoteTestingMachineIP: null
+remoteTestingMachinePort: 88
+remoteTesting: false
+browser: null
+systemUnderDebug: null
+reportDBhost: null
+reportDBport: 88
+captureTraffic: false
+useBrowserMobProxy: false
+stopOnClassFailure: null
+reportFileName: UI_Extent_Report.html
+reportFolder: ./ExtentReport/
+numOfAttemptsToRefresh: 22
+rerun: false
+windowsDownloadDirectory: null
+screenshotFolder: ./ExtentReport/screenshots/
+harFilesFolder: ./ExtentReport/har_files/
