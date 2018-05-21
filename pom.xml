@@ -13,18 +13,14 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <nexus.proxy>https://nexus.onap.org</nexus.proxy>
+		<nexus.proxy>https://nexus.onap.org</nexus.proxy>
 		<staging.profile.id>176c31dfe190a</staging.profile.id>
+    <httpclient.version>4.5.5</httpclient.version>
+    <snakeyaml.version>1.21</snakeyaml.version>
+    <slf4j.version>1.7.25</slf4j.version>
 	</properties>
 
 	<dependencies>
-
-		<dependency>
-			<groupId>org.openecomp.d2</groupId>
-			<artifactId>ui-api-ci</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
-		</dependency>
-
 
 		<dependency>
 			<groupId>org.assertj</groupId>
@@ -38,7 +34,82 @@
 			<artifactId>DCAE-DT-PROPERTY</artifactId>
 			<version>1.2.0-SNAPSHOT</version>
 		</dependency>
-	</dependencies>
+
+        <!-- Snake Yaml -->
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>${snakeyaml.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- http client -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${httpclient.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>${httpclient.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.5</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>6.14.3</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.aventstack</groupId>
+            <artifactId>extentreports</artifactId>
+            <version>3.1.5</version>
+            <scope>compile</scope>
+        </dependency>
+
+    </dependencies>
 
 	<build>
 		<plugins>
@@ -56,7 +127,7 @@
 						<configuration>
 							<archive>
 								<manifest>
-									<mainClass>com.att.ecomp.dcae.ci.run.RunTestSuite</mainClass>
+									<mainClass>org.onap.dcae.ci.run.RunTestSuite</mainClass>
 								</manifest>
 							</archive>
 							<descriptorRefs>
@@ -66,67 +137,24 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- Site Plugin -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-site-plugin</artifactId>
-				<version>3.4</version>
-				<dependencies>
-					<dependency>
-						<groupId>org.apache.maven.wagon</groupId>
-						<artifactId>wagon-webdav-jackrabbit</artifactId>
-						<version>2.10</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-			<!-- Staging Plugin -->
-			<plugin>
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.6.7</version>
-				<extensions>true</extensions>
-				<configuration>
-					<nexusUrl>${nexus.proxy}</nexusUrl>
-					<stagingProfileId>${staging.profile.id}</stagingProfileId>
-					<serverId>ecomp-staging</serverId>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
-        <repositories>
-        <!-- LF repositories -->
-        <repository>
-            <id>ecomp-releases</id>
-            <name>Release Repository</name>
-            <url>${nexus.proxy}/content/repositories/releases/</url>
-        </repository>
-        <repository>
-            <id>ecomp-snapshots</id>
-            <name>Snapshots Repository</name>
-            <url>${nexus.proxy}/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
-            <id>ecomp-public</id>
-            <name>Public Repository</name>
-            <url>${nexus.proxy}/content/repositories/public/</url>
-        </repository>
-        <!-- LF repositories END-->
-    </repositories>
 
-    <distributionManagement>
-        <repository>
-            <id>ecomp-releases</id>
-            <name>Release Repository</name>
-            <url>${nexus.proxy}/content/repositories/releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>ecomp-snapshots</id>
-            <name>Snapshot Repository</name>
-            <url>${nexus.proxy}/content/repositories/snapshots/</url>
-        </snapshotRepository>
-        <site>
-            <id>ecomp-site</id>
-            <url>dav:${nexus.proxy}${sitePath}</url>
-        </site>
-    </distributionManagement>
+	<repositories>
+		<repository>
+			<id>nexus</id>
+			<name>2020</name>
+			<url>http://mavencentral.it.att.com:8084/nexus/content/groups/2020SAPC/</url>
+			<layout>default</layout>
+		</repository>
+
+		<repository>
+			<id>ATT public</id>
+			<name>ATT public</name>
+			<url>http://mavencentral.it.att.com:8084/nexus/content/groups/att-public-group/</url>
+			<layout>default</layout>
+		</repository>
+
+	</repositories>
+
 </project>

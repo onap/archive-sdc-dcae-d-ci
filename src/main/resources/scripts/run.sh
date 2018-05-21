@@ -35,7 +35,7 @@ fi
 LOGS_PROP_FILE=file:${FULL_PATH}/conf/log4j.properties
 CONF_FILE=${FULL_PATH}/conf/conf.yaml
 CREDENTIALS_FILE=${FULL_PATH}/conf/credentials.yaml
-MainClass=com.att.ecomp.dcae.ci.run.RunTestSuite
+MainClass=org.onap.dcae.ci.run.RunTestSuite
 
 
 cmd="java -Dconfig.resource=${CONF_FILE} -Dcredentials.file=${CREDENTIALS_FILE} -Dlog4j.configuration=${LOGS_PROP_FILE} -DtestSuite=${SUITE_FILE} -cp $JAR_FILE ${MainClass} &"
