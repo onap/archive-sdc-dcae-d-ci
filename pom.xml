@@ -4,7 +4,7 @@
 	<groupId>org.onap.sdc.dcae-d.ci</groupId>
 	<artifactId>dcae-ci-tests</artifactId>
 	<version>1.2.0-SNAPSHOT</version>
-	<name>DCAE Tests</name>
+	<name>dcae-d ci tests</name>
 	<packaging>jar</packaging>
 	<description>Tests for DCAE Designer </description>
 
@@ -18,6 +18,7 @@
     <httpclient.version>4.5.5</httpclient.version>
     <snakeyaml.version>1.21</snakeyaml.version>
     <slf4j.version>1.7.25</slf4j.version>
+		<sonar.branch>${project.version}</sonar.branch>
 	</properties>
 
 	<dependencies>
@@ -136,6 +137,31 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			<!-- Site Plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.4</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.maven.wagon</groupId>
+						<artifactId>wagon-webdav-jackrabbit</artifactId>
+						<version>2.10</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<!-- Staging Plugin -->
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<nexusUrl>${nexus.proxy}</nexusUrl>
+					<stagingProfileId>${staging.profile.id}</stagingProfileId>
+					<serverId>ecomp-staging</serverId>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
