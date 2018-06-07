@@ -19,6 +19,7 @@
     <snakeyaml.version>1.21</snakeyaml.version>
     <slf4j.version>1.7.25</slf4j.version>
 		<sonar.branch>${project.version}</sonar.branch>
+		<sonar.coverage.exclusions>**</sonar.coverage.exclusions>
 	</properties>
 
 	<dependencies>
