@@ -1,0 +1,31 @@
+{
+  "name": "src",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "cy:run": "cypress run",
+    "cy:open":
+      "cypress open --config baseUrl=http://localhost:4300/#/ --env backendUrl=http://localhost:8446/",
+    "cy:report": "cypress run --reporter  mochawesome",
+    "cy:only": "stop-only cypress",
+    "cy:verify": "cypress verify",
+    "precommit": "pretty-quick --staged"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cypress": "^2.1.0",
+    "cypress-testing-library": "^2.2.0",
+    "mocha": "^5.2.0",
+    "mochawesome": "^3.0.2"
+  },
+  "devDependencies": {
+    "cypress-testing-library": "^2.2.0",
+    "husky": "^0.14.3",
+    "prettier": "^1.12.1",
+    "pretty-quick": "^1.5.1",
+    "stop-only": "^1.2.1"
+  }
+}

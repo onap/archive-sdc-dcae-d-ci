@@ -1,0 +1,4 @@
+{
+  "entryPhase": "snmp_map",
+  "publishPhase": "snmp_publish"
+}

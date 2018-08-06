@@ -5,10 +5,7 @@ import org.onap.dcae.ci.entities.RestResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
@@ -156,7 +153,6 @@ public class HttpRequest {
 	}
 
 
-
 	public RestResponse httpSendPost(String url, String body, Map<String, String> headers) throws IOException {
 		return httpSendPost(url, body, headers, "POST");
 	}
@@ -202,6 +198,59 @@ public class HttpRequest {
 				response.append(inputLine);
 			}
 			in.close();
+		} catch (Exception e) {
+			logger.debug("response body is null");
+		}
+
+		String result;
+
+		try {
+
+			result = IOUtils.toString(con.getErrorStream());
+			response.append(result);
+
+		} catch (Exception e2) {
+			result = null;
+		}
+		logger.debug("Response body: {}",response);
+
+		// print result
+
+		restResponse.setStatusCode(responseCode);
+
+		if (response != null) {
+			restResponse.setResponse(response.toString());
+		}
+
+		Map<String, List<String>> headerFields = con.getHeaderFields();
+		restResponse.setHeaderFields(headerFields);
+		String responseMessage = con.getResponseMessage();
+		restResponse.setResponseMessage(responseMessage);
+
+		con.disconnect();
+		return restResponse;
+
+	}
+
+	public RestResponse httpSendPost(String url, String body) throws IOException {
+
+		RestResponse restResponse = new RestResponse();
+		URL obj = new URL(url);
+		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+		// Send post request
+		if (body != null) {
+			con.setDoOutput(true);
+			DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+			wr.writeBytes(body);
+			wr.flush();
+			wr.close();
+		}
+		int responseCode = con.getResponseCode();
+		StringBuilder response = new StringBuilder();
+
+		try {
+			response.append(IOUtils.toString(con.getInputStream(), "UTF-8"));
 		} catch (Exception e) {
 			logger.debug("response body is null");
 		}

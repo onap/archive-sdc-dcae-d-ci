@@ -29,6 +29,8 @@
             <class name="org.onap.dcae.ci.api.tests.vfcmt.GetVfcmtsForMigration"></class>
             <class name="org.onap.dcae.ci.api.tests.vfcmt.GetAllMonitoringTemplateVfcmts"></class>
             <class name="org.onap.dcae.ci.api.tests.deploy_tool.DeployToolTest"></class>
+            <class name="org.onap.dcae.ci.api.tests.blueprint.ToscaLabApiTests"></class>
+            <class name="org.onap.dcae.ci.api.tests.configuration.ConfigurationControllerApiTest"></class>
         </classes>
     </test> <!-- Test -->
 </suite> <!-- Suite -->

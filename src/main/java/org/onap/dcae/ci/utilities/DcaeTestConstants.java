@@ -13,7 +13,6 @@ public class DcaeTestConstants {
 			public static final String NOT_CERTIFIED_CHECKIN = "NOT_CERTIFIED_CHECKIN";
 			public static final String CONFLICT = "Conflict";
 			public static final String CERTIFIED = "CERTIFIED";
-			
 		}
 	}
 }

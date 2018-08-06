@@ -1,0 +1,17 @@
+{
+  "name": "dcae-ci-tests",
+  "description": "Installation application Setup - dcae-ci-tests",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+
+  },
+  "override_attributes": {
+
+  },
+  "chef_type": "role",
+  "run_list": [
+    "recipe[dcae-ci-tests::dcae-ci_setup]"
+  ],
+  "env_run_lists": {
+  }
+}

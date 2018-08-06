@@ -1,27 +1,24 @@
 package org.onap.dcae.ci.api.tests.composition;
 
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.assertj.core.api.SoftAssertions;
-import org.onap.dcae.ci.api.tests.DcaeRestBaseTest;
-import org.onap.dcae.ci.entities.RestResponse;
-
-import org.onap.dcae.ci.entities.composition.rightMenu.element.Item;
-import org.onap.dcae.ci.entities.composition.rightMenu.elements.Element;
-import org.onap.dcae.ci.utilities.DcaeRestClient;
-import org.onap.dcae.ci.report.Report;
-import org.onap.sdc.dcae.composition.model.Model;
-
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
 import com.aventstack.extentreports.Status;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
+import org.assertj.core.api.SoftAssertions;
+import org.onap.dcae.ci.api.tests.DcaeRestBaseTest;
+import org.onap.dcae.ci.entities.RestResponse;
+import org.onap.dcae.ci.report.Report;
+import org.onap.dcae.ci.utilities.DcaeRestClient;
+import org.onap.dcae.ci.utilities.DcaeTestConstants;
+import org.onap.sdc.dcae.composition.model.Model;
+import org.onap.sdc.dcae.composition.model.Node;
+import org.onap.sdc.dcae.composition.restmodels.canvas.DcaeComponentCatalog;
+import org.onap.sdc.dcae.composition.restmodels.sdc.Resource;
+import org.testng.annotations.Test;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class CompositionElementsControllerTests extends DcaeRestBaseTest {
 	
@@ -30,57 +27,24 @@ public class CompositionElementsControllerTests extends DcaeRestBaseTest {
 	@Test 
 	public void test_getAllElements() throws IOException{
 		Report.log(Status.INFO, "test_getAllElements start");
-		RestResponse response = DcaeRestClient.getElements();
+		RestResponse response = DcaeRestClient.getCatalog();
 		Report.log(Status.INFO, "getElements response=%s", response);
-		JsonElement getElementJsonResponse = getElementsJson(response);
-		Type listType = new TypeToken<List<Element>>(){}.getType();
-		List<Element> responseData = gson.fromJson(getElementJsonResponse, listType);
+		DcaeComponentCatalog getCatalogResponse = gson.fromJson(response.getResponse(), DcaeComponentCatalog.class);
 		
 		SoftAssertions.assertSoftly(softly -> {
 			softly.assertThat(response.getStatusCode()).as("response status").isEqualTo(200);
-			softly.assertThat(getElementJsonResponse.toString()).isNotEmpty();
-			softly.assertThat(responseData).extracting("itemId")
-				.containsExactlyInAnyOrder("Policy","Utility","Microservice","Database","Collector","Analytics","Source");
-		});
-	}
-	
-	
-	@DataProvider(name="item")
-	public static Object[][] allElementsItems() throws IOException{
-		RestResponse response = DcaeRestClient.getElements();
-		JsonElement getElementJsonResponse = getElementsJson(response);
-		Type listType = new TypeToken<List<Element>>(){}.getType();
-		List<Element> responseData = gson.fromJson(getElementJsonResponse, listType);
-		return responseData
-			.stream()
-			.map(x -> new Object[]{ x.getItemId() } )
-			.collect(Collectors.toList())
-			.toArray(new Object[responseData.size()][1]);
-	}
-	
-	@Test(dataProvider ="item")
-	public void test_getAllElementsByItemId(String itemName) throws IOException{
-		Report.log(Status.INFO, "test_getAllElementsByItemId start");
-		RestResponse response = DcaeRestClient.getItem(itemName);
-		Report.log(Status.INFO, "getItem response=%s", response);
-		
-		SoftAssertions.assertSoftly(softly -> {
-			softly.assertThat(response.getStatusCode()).as("response status").isEqualTo(200);
+			softly.assertThat(getCatalogResponse.toString()).isNotEmpty();
+			softly.assertThat(Arrays.asList("Policy","Utility","Microservice","Database","Collector","Analytics","Source"))
+					.containsAll(getCatalogResponse.getElements().stream().map(DcaeComponentCatalog.SubCategoryFolder::getItemId).collect(Collectors.toList()));
 		});
 	}
 	
 	@Test
 	public void test_getModelData() throws IOException{
 		Report.log(Status.INFO, "test_getModelData start");
-		RestResponse responseGetElements = DcaeRestClient.getElements();
-		JsonElement obj = getElementsJson(responseGetElements);	
-		String elementItemName = getElementItemName(obj);
-
-		RestResponse responseElementsItem = DcaeRestClient.getItem(elementItemName);
-		JsonElement elementsById = parser.parse(responseElementsItem.getResponse());
-		JsonElement itemData = elementsById.getAsJsonObject().get("data").getAsJsonObject().get("element").getAsJsonObject().get("items");
-		
-		String elemId = getElementItemID(itemData);
+		DcaeComponentCatalog getCatalogResponse = gson.fromJson(DcaeRestClient.getCatalog().getResponse(), DcaeComponentCatalog.class);
+		List<Resource> itemsData = getCatalogResponse.getElements().stream().filter(p -> DcaeTestConstants.Composition.Microservice.equals(p.getItemId())).findAny().get().getItems();
+		String elemId = itemsData.stream().filter(p -> "map".equalsIgnoreCase(p.getName())).findAny().get().getUuid();
 		Report.log(Status.INFO, "test_getModelData start");
 		
 		RestResponse response = DcaeRestClient.getItemModel(elemId);
@@ -97,21 +61,15 @@ public class CompositionElementsControllerTests extends DcaeRestBaseTest {
 	@Test
 	public void test_getTypeData() throws IOException{
 		Report.log(Status.INFO, "test_getTypeData start");
-		RestResponse responseGetElements = DcaeRestClient.getElements();
-		JsonElement obj = getElementsJson(responseGetElements);	
-		String elementItemName = getElementItemName(obj);
-
-		RestResponse responseElementsItem = DcaeRestClient.getItem(elementItemName);
-		JsonElement elementsById = parser.parse(responseElementsItem.getResponse());
-		JsonElement itemData = elementsById.getAsJsonObject().get("data").getAsJsonObject().get("element").getAsJsonObject().get("items");
-		
-		String elemId = getElementItemID(itemData);
+		DcaeComponentCatalog getCatalogResponse = gson.fromJson(DcaeRestClient.getCatalog().getResponse(), DcaeComponentCatalog.class);
+		List<Resource> itemsData = getCatalogResponse.getElements().stream().filter(p -> DcaeTestConstants.Composition.Microservice.equals(p.getItemId())).findAny().get().getItems();
+		String elemId = itemsData.stream().filter(p -> "map".equalsIgnoreCase(p.getName())).findAny().get().getUuid();
 		RestResponse responseModel = DcaeRestClient.getItemModel(elemId);
 		JsonElement jsonRes = parser.parse(responseModel.getResponse());
 		JsonElement jsonModel = jsonRes.getAsJsonObject().get("data").getAsJsonObject().get("model").getAsJsonObject();
 		Model model = gson.fromJson(jsonModel, Model.class);
 		List<String> nodesDataTypes = model.getNodes().stream()
-			.map(y -> y.getType())
+			.map(Node::getType)
 			.collect(Collectors.toList());
 		
 		nodesDataTypes.forEach(z -> Report.log(Status.INFO, "All types inside model: " + z));
@@ -126,26 +84,14 @@ public class CompositionElementsControllerTests extends DcaeRestBaseTest {
 		});
 	}
 	
-	/**************** nagative ***************/ 
-	@Test 
-	public void test_getAllElementsByNonExistItemId() throws IOException{
-		Report.log(Status.INFO, "test_getAllElementsByNonExistItemId start");
-		RestResponse response = DcaeRestClient.getItem("notExist");
-		JsonElement elementsById = parser.parse(response.getResponse());
-		JsonElement exception = elementsById.getAsJsonObject().get("error").getAsJsonObject().get("exception");
-		
-		SoftAssertions.assertSoftly(softly -> {
-			softly.assertThat(response.getStatusCode()).as("response status").isEqualTo(200);
-			softly.assertThat(exception.toString()).isNotEmpty();
-		});
-	}
+	/**************** negative ***************/
 	
 	@Test
 	public void test_getErrorNonExistingModelData() throws IOException{
 		Report.log(Status.INFO, "test_getErrorNonExistingModelData start");
 		RestResponse response = DcaeRestClient.getItemModel("notExist");
-		JsonElement elementsById = parser.parse(response.getResponse());
-		JsonElement exception = elementsById.getAsJsonObject().get("error");
+		JsonElement error = parser.parse(response.getResponse());
+		JsonElement exception = error.getAsJsonObject().get("requestError");
 		
 		SoftAssertions.assertSoftly(softly -> {
 			softly.assertThat(response.getStatusCode()).as("response status").isEqualTo(500);
@@ -157,44 +103,13 @@ public class CompositionElementsControllerTests extends DcaeRestBaseTest {
 	public void test_getErrorNonExistingItemType() throws IOException{
 		Report.log(Status.INFO, "test_getErrorNonExistingItemType start");
 		RestResponse response = DcaeRestClient.getItemType("notExistId","nonType");
-		JsonElement elementsById = parser.parse(response.getResponse());
-		JsonElement exception = elementsById.getAsJsonObject().get("error");
+		JsonElement error = parser.parse(response.getResponse());
+		JsonElement exception = error.getAsJsonObject().get("requestError");
 		
 		SoftAssertions.assertSoftly(softly -> {
 			softly.assertThat(response.getStatusCode()).as("response status").isEqualTo(500);
 			softly.assertThat(exception.toString()).isNotEmpty();
 		});
 	}
-	
-	/******************** private ********************/
-	private static JsonElement getElementsJson(RestResponse response) {
-		JsonParser parser = new JsonParser();
-		JsonElement element = parser.parse(response.getResponse());
-		JsonElement obj = element.getAsJsonObject().get("data").getAsJsonObject().get("elements");
-		return obj;
-	}
-	
-	private String getElementItemName(JsonElement obj) {
-		Type listType = new TypeToken<List<Element>>(){}.getType();
-		List<Element> fromJson = gson.fromJson(obj, listType);
-		List<Element> collect = fromJson.stream().filter(x->x.getName().equals("Microservice")).collect(Collectors.toList());
-		Element element = collect.get(0);
-		String elementItemName = element.getName();
-		return elementItemName;
-	}
-	
-	private String getElementItemID(JsonElement data) {
-		Type listType = new TypeToken<List<Item>>(){}.getType();
-		List<Item> elementsItemFoi = gson.fromJson(data, listType);
-		Report.log(Status.INFO, "getElementItemID for map");
-		List<Item> foiItemData = elementsItemFoi.stream().filter(x->x.getName().equalsIgnoreCase("map")).collect(Collectors.toList());
-		if(foiItemData!=null && foiItemData.size()>0){
-			Item item = foiItemData.get(0);
-			String elemId = item.getItemId();
-			return elemId;
-		}else{
-			Report.log(Status.ERROR, "getElementItemID for map failed. Does the CI environment has map component in it??");
-			return null;
-		}
-	}
+
 }

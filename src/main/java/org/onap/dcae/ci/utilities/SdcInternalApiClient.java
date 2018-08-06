@@ -66,12 +66,10 @@ public class SdcInternalApiClient extends BaseRestUtils {
 		return new Vfi(DcaeUtil.getValueFromJsonResponse(createResourceInstance.getResponse(), "name"), service);
 	}
 
-
 	public static RestResponse changeResourceLifeCycleState(String assetUniqueId, String lifeCycleOperation) throws IOException  {
 		String url = getApiUrl(String.format("resources/%s/lifecycleState/%s", assetUniqueId, lifeCycleOperation));
 		return sendPost(url, "{\"userRemarks\":\"Ci lifecycle operation\"}", defaultUserId, acceptHeaderData);
 	}
-
 
 	// DELETE - Clean up //
 
@@ -82,21 +80,20 @@ public class SdcInternalApiClient extends BaseRestUtils {
 
 	public static RestResponse deleteMarkedResources() throws IOException {
 
-		String url = String.format("%s:%s/sdc2/rest/v1/inactiveComponents/resource", configuration.getBeHost(), configuration.getBePort());
+		String url = String.format("%s:%s/sdc2/rest/v1/inactiveComponents/resource", configuration.getSdcBeHost(), configuration.getSdcBePort());
 		return sendDelete(url, adminUserId);
 	}
 
 	public static RestResponse deleteMarkedServices() throws IOException {
-		String url = String.format("%s:%s/sdc2/rest/v1/inactiveComponents/service", configuration.getBeHost(), configuration.getBePort());
+		String url = String.format("%s:%s/sdc2/rest/v1/inactiveComponents/service", configuration.getSdcBeHost(), configuration.getSdcBePort());
 		return sendDelete(url, adminUserId);
 	}
 
 	public static Map<String, List<SdcComponent>> getAssetsByUser(String userId) throws IOException {
-		String url = String.format("%s:%s/sdc2/rest/v1/followed", configuration.getBeHost(), configuration.getBePort());
+		String url = String.format("%s:%s/sdc2/rest/v1/followed", configuration.getSdcBeHost(), configuration.getSdcBePort());
 		RestResponse restResponse = sendGet(url, userId);
 		return 200 == restResponse.getStatusCode() ? gson.fromJson(restResponse.getResponse(), new TypeToken<Map<String, List<SdcComponent>>>(){}.getType()) : new HashMap<>();
 	}
-
 
 	public static SdcComponentMetadata getAssetMetadata(String context, String uniqueId, String userId) throws IOException {
 		String url = getApiUrl(String.format("%s/%s/filteredDataByParams?include=metadata", context, uniqueId));

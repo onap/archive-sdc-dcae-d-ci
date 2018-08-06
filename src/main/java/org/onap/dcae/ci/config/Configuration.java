@@ -12,17 +12,10 @@ import java.nio.file.Paths;
 public class Configuration {
 	private String apiPath;
 	private String dcaeBeHost;
-	private String beHost;
-	private String feHost;
-	private int bePort;
-	private int fePort;
 	private String dcaeBePort;
+	private String sdcBeHost;
+	private int sdcBePort;
 	private String url;
-	private String remoteTestingMachineIP;
-	private int remoteTestingMachinePort;
-	private boolean remoteTesting;
-	private String browser;
-	private String systemUnderDebug;
 	private String reportDBhost;
 	private int reportDBport;
 	private boolean captureTraffic;
@@ -35,7 +28,7 @@ public class Configuration {
 	private String windowsDownloadDirectory;
 	private String screenshotFolder;
 	private String harFilesFolder;
-	private String ruleEditorUrl;
+	private String toscaLabUrl;
 
 	public Configuration() {
 		this.basicInit((String) null);
@@ -50,48 +43,30 @@ public class Configuration {
 	}
 
 	private void basicInit(String url) {
-		this.remoteTesting = false;
 		this.captureTraffic = false;
 		this.useBrowserMobProxy = false;
 		this.reportFolder = "." + File.separator + "ExtentReport" + File.separator;
 		this.reportFileName = "UI_Extent_Report.html";
 		this.screenshotFolder = this.reportFolder + "screenshots" + File.separator;
 		this.harFilesFolder = this.reportFolder + "har_files" + File.separator;
-		this.browser = "firefox";
 		this.url = url;
 		this.numOfAttemptsToRefresh = 2;
 	}
 
-	public String getBeHost() {
-		return this.beHost;
+	public String getSdcBeHost() {
+		return this.sdcBeHost;
 	}
 
-	public void setBeHost(String beHost) {
-		this.beHost = beHost;
+	public void setSdcBeHost(String sdcBeHost) {
+		this.sdcBeHost = sdcBeHost;
 	}
 
-	public String getFeHost() {
-		return this.feHost;
+	public int getSdcBePort() {
+		return this.sdcBePort;
 	}
 
-	public void setFeHost(String feHost) {
-		this.feHost = feHost;
-	}
-
-	public int getBePort() {
-		return this.bePort;
-	}
-
-	public void setBePort(int bePort) {
-		this.bePort = bePort;
-	}
-
-	public int getFePort() {
-		return this.fePort;
-	}
-
-	public void setFePort(int fePort) {
-		this.fePort = fePort;
+	public void setSdcBePort(int sdcBePort) {
+		this.sdcBePort = sdcBePort;
 	}
 
 	public String getUrl() {
@@ -100,46 +75,6 @@ public class Configuration {
 
 	public void setUrl(String url) {
 		this.url = url;
-	}
-
-	public String getRemoteTestingMachineIP() {
-		return this.remoteTestingMachineIP;
-	}
-
-	public void setRemoteTestingMachineIP(String remoteTestingMachineIP) {
-		this.remoteTestingMachineIP = remoteTestingMachineIP;
-	}
-
-	public int getRemoteTestingMachinePort() {
-		return this.remoteTestingMachinePort;
-	}
-
-	public void setRemoteTestingMachinePort(int remoteTestingMachinePort) {
-		this.remoteTestingMachinePort = remoteTestingMachinePort;
-	}
-
-	public boolean isRemoteTesting() {
-		return this.remoteTesting;
-	}
-
-	public void setRemoteTesting(boolean remoteTesting) {
-		this.remoteTesting = remoteTesting;
-	}
-
-	public String getBrowser() {
-		return this.browser;
-	}
-
-	public void setBrowser(String browser) {
-		this.browser = browser;
-	}
-
-	public String getSystemUnderDebug() {
-		return this.systemUnderDebug;
-	}
-
-	public void setSystemUnderDebug(String systemUnderDebug) {
-		this.systemUnderDebug = systemUnderDebug;
 	}
 
 	public String getReportDBhost() {
@@ -262,12 +197,12 @@ public class Configuration {
 		this.apiPath = apiPath;
 	}
 
-	public String getRuleEditorUrl() {
-		return ruleEditorUrl;
+	public String getToscaLabUrl() {
+		return toscaLabUrl;
 	}
 
-	public void setRuleEditorUrl(String ruleEditorUrl) {
-		this.ruleEditorUrl = ruleEditorUrl;
+	public void setToscaLabUrl(String toscaLabUrl) {
+		this.toscaLabUrl = toscaLabUrl;
 	}
 
 

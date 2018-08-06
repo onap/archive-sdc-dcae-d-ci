@@ -1,16 +1,16 @@
 package org.onap.dcae.ci.utilities;
 
-
 import com.aventstack.extentreports.Status;
 import com.google.common.net.UrlEscapers;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import org.apache.commons.collections4.map.SingletonMap;
 import org.json.simple.JSONObject;
 import org.onap.dcae.ci.config.Configuration;
 import org.onap.dcae.ci.entities.RestResponse;
+import org.onap.dcae.ci.enums.HttpHeaderEnum;
 import org.onap.dcae.ci.report.Report;
 import org.onap.sdc.dcae.composition.restmodels.CreateVFCMTRequest;
-
 
 import java.io.IOException;
 
@@ -20,6 +20,7 @@ public class DcaeRestClient extends BaseRestUtils {
 	private static String designer2UserId = "me0009";
 	private static String adminDefaultId = "jh0003";
 	private static String testerDefaultId = "jm0007";
+	private static Configuration configuration = ConfigurationReader.getConfiguration();
 
     public static String getDefaultUserId() {
         return designerDefaultId;
@@ -38,7 +39,6 @@ public class DcaeRestClient extends BaseRestUtils {
 	}
 
     protected static String getApiUrl(String path) {
-        Configuration configuration = ConfigurationReader.getConfiguration();
 
         String dcaeBePort = configuration.getDcaeBePort();
         String dcaeBeHost = configuration.getDcaeBeHost();
@@ -137,12 +137,10 @@ public class DcaeRestClient extends BaseRestUtils {
         return sendGet(getApiUrl("/resource/"+ componentId), designerDefaultId);
     }
 
-    public static RestResponse getElements() throws IOException{
-        return sendGet(getApiUrl("/elements"), designerDefaultId);
-    }
-    public static RestResponse getItem(String element) throws IOException{
-        return sendGet(getApiUrl("/"+ element +"/elements"), designerDefaultId);
-    }
+	public static RestResponse getCatalog() throws IOException{
+		return sendGet(getApiUrl("/catalog"), designerDefaultId);
+	}
+
     public static RestResponse getItemModel(String elementId) throws IOException{
         return sendGet(getApiUrl("/"+ elementId +"/model"), designerDefaultId);
     }
@@ -219,15 +217,52 @@ public class DcaeRestClient extends BaseRestUtils {
         return sendDelete(getApiUrl(String.format("/rule-editor/rule/%s/%s/%s/%s/%s", vfcmtUid, dcaeCompName, nid, configParam, ruleUid)), designerDefaultId);
     }
 
-    public static RestResponse translateRules(String vfcmtUid, String dcaeCompName, String nid, String configParam, String flowType) throws IOException {
-        return sendGet(getApiUrl(String.format("/rule-editor/rule/translate/%s/%s/%s/%s?flowType=%s", vfcmtUid, dcaeCompName, nid, configParam, flowType)), designerDefaultId);
-    }
+	public static RestResponse deleteGroupOfRules(String vfcmtUid, String dcaeCompName, String nid, String configParam, String groupId) throws IOException {
+		return sendDelete(getApiUrl(String.format("/rule-editor/group/%s/%s/%s/%s/%s", vfcmtUid, dcaeCompName, nid, configParam, groupId)), designerDefaultId);
+	}
+
+	public static RestResponse translateRules(String request) throws IOException {
+		return sendPost(getApiUrl("/rule-editor/rule/translate"), request, designerDefaultId, "application/json");
+	}
 
     public static RestResponse getExistingRuleTargets(String vfcmtUuid, String dcaeCompName, String nid) throws IOException {
         String url = getApiUrl(String.format("/rule-editor/getExistingRuleTargets/%s/%s/%s", vfcmtUuid, dcaeCompName, nid));
         return sendGet(url, designerDefaultId);
     }
 
+	public static RestResponse exportRules(String vfcmtUuid, String dcaeCompName, String nid, String configParam) throws IOException {
+		String url = getApiUrl(String.format("/rule-editor/export/%s/%s/%s/%s", vfcmtUuid, dcaeCompName, nid, configParam));
+		return sendGet(url, designerDefaultId, new SingletonMap<>(HttpHeaderEnum.ACCEPT.getValue(), "application/octet-stream"));
+	}
+
+	public static RestResponse importRules(String vfcmtUuid, String dcaeCompName, String nid, String configParam, String request) throws IOException {
+		String url = getApiUrl(String.format("/rule-editor/import/%s/%s/%s/%s", vfcmtUuid, dcaeCompName, nid, configParam));
+		return sendPost(url, request, designerDefaultId, "application/json");
+	}
+
+	public static RestResponse getLatestMcUuid(String contextType, String serviceUuid, String vfiName, String vfcmtUuid) throws IOException {
+    	return sendGet(getApiUrl(String.format("/%s/%s/%s/%s/getLatestMcUuid", contextType, serviceUuid, UrlEscapers.urlFragmentEscaper().escape(vfiName), vfcmtUuid)), designerDefaultId);
+	}
+
+	// Configuration
+
+	public static RestResponse getConfiguredFlowTypes() throws IOException {
+		return sendGet(getApiUrl("/conf/composition"), designerDefaultId);
+	}
+
+	public static RestResponse getConfiguredPhasesByFlowType(String flowType) throws IOException {
+		return sendGet(getApiUrl(String.format("/conf/getPhases/%s", flowType)), designerDefaultId);
+	}
+
+    // TOSCA LAB //
+
+	public static RestResponse getToscaLabHealthCheck() throws IOException {
+		return new HttpRequest().httpSendGet(configuration.getToscaLabUrl().concat("/healthcheck"), null);
+	}
+
+	public static RestResponse translateModelToBlueprint(String payload) throws IOException {
+		return new HttpRequest().httpSendPost(configuration.getToscaLabUrl().concat("/translate"), payload);
+	}
 
 	private static JSONObject newVfcmtJSON(String name, String description) {
 		JSONObject json = new JSONObject();

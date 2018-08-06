@@ -5,8 +5,6 @@ import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.Markup;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
-import org.onap.dcae.ci.report.ExtentManager;
-import org.onap.dcae.ci.report.ExtentTestManager;
 import org.onap.dcae.ci.utilities.SetupReport;
 import org.testng.ITestResult;
 

@@ -27,30 +27,13 @@ public class CompositionMicroServicesApiTests extends DcaeRestBaseTest {
 	@Test
 	public void getAllElementsTest() throws IOException, ParseException{
 		Report.log(Status.INFO, "getAllElementsTest start");
-		RestResponse services = DcaeRestClient.getElements();
+		RestResponse services = DcaeRestClient.getCatalog();
 		Report.log(Status.INFO, "getAllElementsTest response=%s", services);
 		assertThat(services.getStatusCode().intValue()).isEqualTo(200);
 		String response = services.getResponse();
 		JSONParser parser = new JSONParser();
 		JSONObject o = (JSONObject) parser.parse(response);
-		JSONObject ele = (JSONObject) o.get("data");
-		String arrString = ele.get("elements").toString();
-		assertThat(arrString)
-			.as("Check that elements not empty")
-			.isNotEmpty();
-	}
-	
-	@Test
-	public void getMsElementsTest() throws IOException, ParseException{
-		Report.log(Status.INFO, "getMsElementsTest start");
-		RestResponse services = DcaeUtil.SdcElementsModelType.getMsElements();
-		Report.log(Status.INFO, "getMsElementsTest response=%s", services);
-		assertThat(services.getStatusCode().intValue()).isEqualTo(200);
-		String response = services.getResponse();
-		JSONParser parser = new JSONParser();
-		JSONObject o = (JSONObject) parser.parse(response);
-		JSONObject ele = (JSONObject) o.get("data");
-		String arrString = ele.get("element").toString();
+		String arrString = o.get("elements").toString();
 		assertThat(arrString)
 			.as("Check that elements not empty")
 			.isNotEmpty();

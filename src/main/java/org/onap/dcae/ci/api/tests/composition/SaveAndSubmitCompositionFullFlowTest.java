@@ -10,6 +10,7 @@ import org.onap.dcae.ci.report.Report;
 import org.onap.sdc.dcae.composition.restmodels.CreateMcResponse;
 import org.onap.sdc.dcae.composition.restmodels.CreateVFCMTRequest;
 import org.onap.sdc.dcae.composition.restmodels.MonitoringComponent;
+import org.onap.sdc.dcae.composition.restmodels.VfcmtData;
 import org.onap.sdc.dcae.composition.restmodels.sdc.Resource;
 import org.onap.sdc.dcae.composition.restmodels.sdc.ResourceDetailed;
 import org.onap.sdc.dcae.composition.services.Service;
@@ -112,5 +113,64 @@ public class SaveAndSubmitCompositionFullFlowTest extends DcaeRestBaseTest {
 		assertThat(mcList.get(0).getUuid()).isEqualTo(mc.getUuid());
 
     }
+
+
+	@Test
+	public void certifiedMcCheckoutAndBindToServiceSuccessTest() throws IOException {
+
+		CreateVFCMTRequest request = new CreateVFCMTRequest();
+		// If you crashed here (below) it is because your environment has no Base Monitoring Templates
+		request.setTemplateUuid(baseTemplate.getUuid());
+		Service service = createServiceWithVFiAsSdcDesigner();
+		request.setVfiName(service.getResources().get(0).getResourceInstanceName());
+		request.setServiceUuid(service.getUuid());
+		DcaeRestClient.fillCreateMcRequestMandatoryFields(request);
+
+		RestResponse response = DcaeRestClient.createMc(gson.toJson(request));
+		assertThat(response.getStatusCode())
+				.as("status code")
+				.isEqualTo(200);
+
+		CreateMcResponse mcResponse = gson.fromJson(response.getResponse(), CreateMcResponse.class);
+		String initialUuid =  mcResponse.getVfcmt().getUuid();
+
+		response = DcaeRestClient.getLatestMcUuid(request.getContextType(), request.getServiceUuid(), request.getVfiName(), initialUuid);
+		assertThat(response.getStatusCode())
+				.as("status code")
+				.isEqualTo(200);
+		VfcmtData getLatestUuidRes = gson.fromJson(response.getResponse(), VfcmtData.class);
+		assertThat(initialUuid).isEqualTo(getLatestUuidRes.getUuid());
+
+		response = DcaeRestClient.getServiceExternalReferences(service.getUuid(), service.getVersion());
+		assertThat(response.getStatusCode())
+				.as("status code")
+				.isEqualTo(200);
+		Report.log(Status.INFO, "Verify service vfi only references initial mc version");
+		Type typeToken = new TypeToken<Map<String, List<MonitoringComponent>>>(){}.getType();
+		Map<String, List<MonitoringComponent>> monitoringComponents = gson.fromJson(response.getResponse(), typeToken);
+		assertThat(monitoringComponents.get("monitoringComponents").size()).isEqualTo(1);
+		Report.log(Status.INFO, "About to submit the composition");
+		response = DcaeRestClient.submitComposition(request.getServiceUuid(), request.getVfiName(), initialUuid);
+		assertThat(response.getStatusCode())
+				.as("status code")
+				.isEqualTo(200);
+
+		response = DcaeRestClient.getLatestMcUuid(request.getContextType(), request.getServiceUuid(), request.getVfiName(), initialUuid);
+		assertThat(response.getStatusCode())
+				.as("status code")
+				.isEqualTo(200);
+		getLatestUuidRes = gson.fromJson(response.getResponse(), VfcmtData.class);
+		Report.log(Status.INFO, "Verify latest Mc uuid is not the initial one");
+		assertThat(initialUuid).isNotEqualTo(getLatestUuidRes.getUuid());
+		response = DcaeRestClient.getServiceExternalReferences(service.getUuid(), service.getVersion());
+		assertThat(response.getStatusCode())
+				.as("status code")
+				.isEqualTo(200);
+		Report.log(Status.INFO, "Verify service vfi has references to both mc versions");
+
+		monitoringComponents = gson.fromJson(response.getResponse(), typeToken);
+		assertThat(monitoringComponents.get("monitoringComponents").size()).isEqualTo(2);
+
+	}
 
 }
