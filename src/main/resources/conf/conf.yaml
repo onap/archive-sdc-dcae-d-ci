@@ -1,11 +1,11 @@
-dcaeBeHost: http://localhost
-dcaeBePort: 8446
-sdcBeHost: https://zldcrdm2sdc4cbe01.3f1a87.rdm2.tci.att.com
-sdcBePort: 8443
+dcaeBeHost: 
+dcaeBePort: 
+sdcBeHost: 
+sdcBePort: 
 apiPath: ""
-url: https://www.e-access.att.com/DCAE-CIO1/sdc1/portal
-reportDBhost: null
-reportDBport: 88
+url: 
+reportDBhost: 
+reportDBport: 
 captureTraffic: false
 useBrowserMobProxy: false
 stopOnClassFailure: null
@@ -16,4 +16,4 @@ rerun: false
 windowsDownloadDirectory: null
 screenshotFolder: ./ExtentReport/screenshots/
 harFilesFolder: ./ExtentReport/har_files/
-toscaLabUrl: http://localhost:8080
+toscaLabUrl: 
