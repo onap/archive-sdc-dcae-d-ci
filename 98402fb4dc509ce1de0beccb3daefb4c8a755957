@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_02f25d9a",
+        "filename": "src/main/resources/conf/conf.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 69
+      },
+      "writtenOn": "2018-08-08T06:45:10Z",
+      "side": 1,
+      "message": "please remove this from the configuration",
+      "range": {
+        "startLine": 3,
+        "startChar": 12,
+        "endLine": 3,
+        "endChar": 60
+      },
+      "revId": "98402fb4dc509ce1de0beccb3daefb4c8a755957",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_42f8557c",
+        "filename": "src/main/resources/conf/conf.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 69
+      },
+      "writtenOn": "2018-08-08T06:45:10Z",
+      "side": 1,
+      "message": "please remove this from the configuration",
+      "range": {
+        "startLine": 6,
+        "startChar": 5,
+        "endLine": 6,
+        "endChar": 55
+      },
+      "revId": "98402fb4dc509ce1de0beccb3daefb4c8a755957",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
