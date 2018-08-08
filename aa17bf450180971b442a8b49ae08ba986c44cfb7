@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_a23a8934",
+        "filename": "LICENSE.TXT",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 69
+      },
+      "writtenOn": "2018-08-08T06:46:45Z",
+      "side": 0,
+      "message": "why did you remove the license from the root?",
+      "range": {
+        "startLine": 2,
+        "startChar": 18,
+        "endLine": 2,
+        "endChar": 49
+      },
+      "revId": "aa17bf450180971b442a8b49ae08ba986c44cfb7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}

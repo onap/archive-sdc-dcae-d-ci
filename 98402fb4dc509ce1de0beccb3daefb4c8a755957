@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "1a76adc5_e2308158",
+        "filename": "dcae-ci-tests.iml",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 69
+      },
+      "writtenOn": "2018-08-08T06:46:45Z",
+      "side": 1,
+      "message": "why are you pushing ide configuration to the repo remove it.",
+      "range": {
+        "startLine": 1,
+        "startChar": 21,
+        "endLine": 1,
+        "endChar": 37
+      },
+      "revId": "98402fb4dc509ce1de0beccb3daefb4c8a755957",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_02f25d9a",
         "filename": "src/main/resources/conf/conf.yaml",
         "patchSetId": 1
