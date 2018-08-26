@@ -11,13 +11,14 @@
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+        <maven.build.timestamp.format>yyyyMMdd'T'HHmm</maven.build.timestamp.format>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<nexus.proxy>https://nexus.onap.org</nexus.proxy>
 		<staging.profile.id>176c31dfe190a</staging.profile.id>
-    <httpclient.version>4.5.5</httpclient.version>
-    <snakeyaml.version>1.21</snakeyaml.version>
-    <slf4j.version>1.7.25</slf4j.version>
+		<httpclient.version>4.5.5</httpclient.version>
+		<snakeyaml.version>1.21</snakeyaml.version>
+		<slf4j.version>1.7.25</slf4j.version>
 		<sonar.branch>${project.version}</sonar.branch>
 		<sonar.coverage.exclusions>**</sonar.coverage.exclusions>
 	</properties>
@@ -115,6 +116,19 @@
 
 	<build>
 		<plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <id>parse-version</id>
+                        <goals>
+                            <goal>parse-version</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
@@ -187,21 +201,103 @@
 			<!-- LF repositories END-->
 	</repositories>
 
+    <profiles>
+        <profile>
+            <id>docker</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <fabric8.version>0.23.0</fabric8.version>
+                <docker.registry>nexus3.onap.org:10001</docker.registry>
+                <docker.username>docker</docker.username>
+                <docker.password>docker</docker.password>
+                <docker.namespace>onap</docker.namespace>
+                <docker.tag>${project.version}-${maven.build.timestamp}</docker.tag>
+                <docker.latest.tag>${project.version}-latest</docker.latest.tag>
+                <docker.staging.tag>${parsedVersion.majorVersion}.${parsedVersion.minorVersion}-STAGING-latest</docker.staging.tag>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>${fabric8.version}</version>
+
+                        <configuration>
+                            <verbose>true</verbose>
+                            <apiVersion>1.23</apiVersion>
+                            <registry>${docker.registry}</registry>
+                            <authConfig>
+                                <pull>
+                                    <username>${docker.username}</username>
+                                    <password>${docker.password}</password>
+                                </pull>
+                            </authConfig>
+                            <images>
+                                <!-- Build backend image -->
+                                <image>
+                                    <name>${docker.namespace}/${project.artifactId}</name>
+                                    <alias>${project.artifactId}</alias>
+                                    <build>
+                                        <cleanup>try</cleanup>
+                                        <dockerFileDir>${project.basedir}</dockerFileDir>
+                                        <tags>
+                                            <tag>${docker.tag}</tag>
+                                            <tag>${docker.latest.tag}</tag>
+                                            <tag>${docker.staging.tag}</tag>
+                                        </tags>
+                                    </build>
+                                </image>
+                            </images>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>clean-images</id>
+                                <phase>pre-clean</phase>
+                                <goals>
+                                    <goal>remove</goal>
+                                </goals>
+                                <configuration>
+                                    <removeAll>true</removeAll>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>generate-images</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>push-images</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>push</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 	<distributionManagement>
-			<repository>
-					<id>ecomp-releases</id>
-					<name>Release Repository</name>
-					<url>${nexus.proxy}/content/repositories/releases/</url>
-			</repository>
-			<snapshotRepository>
-					<id>ecomp-snapshots</id>
-					<name>Snapshot Repository</name>
-					<url>${nexus.proxy}/content/repositories/snapshots/</url>
-			</snapshotRepository>
-			<site>
-					<id>ecomp-site</id>
-					<url>dav:${nexus.proxy}${sitePath}</url>
-			</site>
+		<repository>
+			<id>ecomp-releases</id>
+			<name>Release Repository</name>
+			<url>${nexus.proxy}/content/repositories/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>ecomp-snapshots</id>
+			<name>Snapshot Repository</name>
+			<url>${nexus.proxy}/content/repositories/snapshots/</url>
+		</snapshotRepository>
+		<site>
+			<id>ecomp-site</id>
+			<url>dav:${nexus.proxy}${sitePath}</url>
+		</site>
 	</distributionManagement>
 
 </project>
