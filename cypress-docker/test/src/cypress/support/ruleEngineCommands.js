@@ -3,9 +3,7 @@ function getListOfRuleEngine(targetFiled) {
   cy
     .route({
       method: "GET",
-      url: `${Cypress.env(
-        "backendUrl"
-      )}/rule-editor/rule/6d436c07-8006-4335-8c84-d65b4740f8d6/map/n.1517823219961.0/${targetFiled}`,
+      url: `${Cypress.env("backendUrl")}/rule-editor/rule/**/**/**/**`,
       response: "fixture:loadAllActionsForRuleEngine"
     })
     .as("serverWithRuleList");
@@ -16,9 +14,7 @@ function emptyRuleEngine(targetFiled) {
   cy
     .route({
       method: "GET",
-      url: `${Cypress.env(
-        "backendUrl"
-      )}/rule-editor/rule/6d436c07-8006-4335-8c84-d65b4740f8d6/map/n.1517823219961.0/${targetFiled}`,
+      url: `${Cypress.env("backendUrl")}/rule-editor/rule/**/**/**/**`,
       response: {}
     })
     .as("serverRuleList")
@@ -35,10 +31,7 @@ function getLatestMcUuid() {
   cy
     .route({
       method: "GET",
-      url:
-        Cypress.env("backendUrl") +
-        "/SERVICES/06c7d927-4e2f-47e1-a29d-b6ed229ebc0a/LiavSrv/6d436c07-8006-4335-8c84-d" +
-        "65b4740f8d6/getLatestMcUuid",
+      url: Cypress.env("backendUrl") + "/SERVICES/**/**/**/**/getLatestMcUuid",
       response: {
         uuid: "6d436c07-8006-4335-8c84-d65b4740f8d6"
       }
@@ -51,8 +44,7 @@ function httpTargetTree() {
   cy
     .route({
       method: "GET",
-      url:
-        Cypress.env("backendUrl") + "/rule-editor/definition/4.1/syslogFields",
+      url: Cypress.env("backendUrl") + "/rule-editor/definition/**/**",
       response: "fixture:syslogTargetTree"
     })
     .as("targetData");
@@ -74,10 +66,7 @@ function doneSaveRule() {
   cy
     .route({
       method: "POST",
-      url:
-        Cypress.env("backendUrl") +
-        "/rule-editor/rule/6d436c07-8006-4335-8c84-d65b4740f8d6/map/n.1517823219961.0/Typ" +
-        "e1",
+      url: Cypress.env("backendUrl") + "/rule-editor/rule/**/**/**/**",
       response: "fixture:doneSaveSimpleCopy"
     })
     .as("doneSaveCopyRule");
@@ -88,10 +77,7 @@ function doneSaveCopyRule() {
   cy
     .route({
       method: "POST",
-      url:
-        Cypress.env("backendUrl") +
-        "/rule-editor/rule/6d436c07-8006-4335-8c84-d65b4740f8d6/map/n.1517823219961.0/Typ" +
-        "e1",
+      url: Cypress.env("backendUrl") + "/rule-editor/rule/**/**/**/**",
       response: "fixture:doneSaveSimpleEditCopy"
     })
     .as("doneSaveCopyRule");
@@ -102,10 +88,7 @@ function deleteRule() {
   cy
     .route({
       method: "DELETE",
-      url:
-        Cypress.env("backendUrl") +
-        "/rule-editor/rule/6d436c07-8006-4335-8c84-d65b4740f8d6/map/n.1517823219961.0/Typ" +
-        "e1/f620724b-7170-43e1-8a8b-55e98cabe658",
+      url: Cypress.env("backendUrl") + "/rule-editor/rule/**/**/**/**/**",
       response: "{}"
     })
     .as("deleteCopyRule");
@@ -116,10 +99,7 @@ function doneSaveAndEditRule() {
   cy
     .route({
       method: "POST",
-      url:
-        Cypress.env("backendUrl") +
-        "/rule-editor/rule/6d436c07-8006-4335-8c84-d65b4740f8d6/map/n.1517823219961.0/Typ" +
-        "e1",
+      url: Cypress.env("backendUrl") + "/rule-editor/rule/**/**/**/**",
       response: "fixture:doneSaveEditSimpleCopy"
     })
     .as("doneSaveAndEditRule");
@@ -130,10 +110,7 @@ function doneSaveMapRule() {
   cy
     .route({
       method: "POST",
-      url:
-        Cypress.env("backendUrl") +
-        "/rule-editor/rule/6d436c07-8006-4335-8c84-d65b4740f8d6/map/n.1517823219961.0/Typ" +
-        "e1",
+      url: Cypress.env("backendUrl") + "/rule-editor/rule/**/**/**/**",
       response: "fixture:doneSaveSimpleMap"
     })
     .as("doneSaveMapRule");
@@ -144,10 +121,7 @@ function doneSaveLogTextRule() {
   cy
     .route({
       method: "POST",
-      url:
-        Cypress.env("backendUrl") +
-        "/rule-editor/rule/6d436c07-8006-4335-8c84-d65b4740f8d6/map/n.1517823219961.0/Typ" +
-        "e1",
+      url: Cypress.env("backendUrl") + "/rule-editor/rule/**/**/**/**",
       response: "fixture:doneSaveSimpleLogText"
     })
     .as("doneSaveLogTextRule");
@@ -171,8 +145,7 @@ function httpGenerateMappingRulesFileName() {
       method: "GET",
       url:
         Cypress.env("backendUrl") +
-        "/rule-editor/getExistingRuleTargets/6d436c07-8006-4335-8c84-d65b4740f8d6/map/n.1" +
-        "517823219961.0",
+        "/rule-editor/getExistingRuleTargets/**/**/**/**",
       response: ["Type1", "json", "name"]
     })
     .as("TranslateSimpleCopy");

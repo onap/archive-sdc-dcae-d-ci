@@ -16,7 +16,9 @@ function verifyCopyActionNotExist(actionType) {
     .select(actionType)
     .get('button[data-tests-id="btnAddAction"]')
     .click();
-  cy.get('[data-tests-id="makeCopyOfAction"]').should("not.be.visible");
+  cy
+    .get('[data-tests-id="makeCopyOfAction"]')
+    .should("not.be.visible");
 }
 
 export const selectVersionAndTypeAndAddFirstRule = () => {
@@ -177,6 +179,88 @@ describe("Rule engine - E2E test flow with mock", () => {
     // .should("have.length", NUMBER_OF_NOT_EXIST_ITEMS); });
   });
 
+  describe("Rule list add filter", () => {
+    beforeEach(() => {
+      cy.httpGenerateMappingRulesFileName();
+      cy.httpGetDDLData();
+      cy.getMCListEmpty();
+      cy.homePage();
+      cy
+        .get('button[data-tests-id="btn-create-mc"]')
+        .click();
+      cy.fillNewMcForm();
+      cy.httpCreateNewMc();
+      cy.getPhases();
+      cy.httpGenerateMappingRulesFileName();
+      cy.httpTargetTree();
+      cy.emptyRuleEngine("Type1");
+      cy
+        .get('button[data-tests-id="createMonitoring"]')
+        .click();
+      cy
+        .get("#ui-tabpanel-1-label")
+        .should("contain", "map")
+        .click();
+      selectVersionAndTypeAndAddFirstRule();
+      fillRuleDescription("newRule");
+      addCopyAction();
+      cy.getLatestMcUuid();
+      cy.doneSaveRule();
+      cy
+        .get('button[data-tests-id="btnDone"]')
+        .click();
+    });
+
+    it("apply filter", () => {
+      cy
+        .get('[data-tests-id="isFilter"]')
+        .click()
+        .get('input[data-tests-id="left"]')
+        .type("ABC")
+        .should("have.value", "ABC");
+
+      cy
+        .get('select[data-tests-id="selectOperator"]')
+        .select("startsWith")
+        .get('input[data-tests-id="right"]')
+        .type("A")
+        .should("have.value", "A");
+    });
+
+    it("Delete filter with checkbox", () => {
+      cy
+        .get('[data-tests-id="isFilter"]')
+        .click()
+        .get('[data-tests-id="removeConditionNode"]')
+        .click();
+      cy
+        .get('input[data-tests-id="left"]')
+        .should("not.be.visible");
+    });
+
+    it("Delete filter with button delete", () => {
+      cy
+        .get('[data-tests-id="isFilter"]')
+        .click()
+        .get('input[data-tests-id="left"]')
+        .type("ABC")
+        .should("have.value", "ABC");
+
+      cy
+        .get('select[data-tests-id="selectOperator"]')
+        .select("startsWith")
+        .get('input[data-tests-id="right"]')
+        .type("A")
+        .should("have.value", "A")
+        .get('[data-tests-id="removeConditionNode"]')
+        .click();
+
+      cy
+        .get('input[data-tests-id="left"]')
+        .should("not.be.visible");
+    });
+  });
+
   describe("Mapping target select", () => {
     beforeEach(() => {
       cy.httpGenerateMappingRulesFileName();
@@ -258,25 +342,25 @@ describe("Rule engine - E2E test flow with mock", () => {
         .get('button[data-tests-id="btnAddAction"]')
         .click()
         .get('[data-tests-id="searchField"]')
-        .type("searchField")
+        .type("searchField", {force: true})
         .get('[data-tests-id="searchValue"]')
-        .type("searchValue")
+        .type("searchValue", {force: true})
         .get('[data-tests-id="searchLeft"]')
-        .type("searchLeft")
+        .type("searchLeft", {force: true})
         .get('[data-tests-id="searchOperator"]')
-        .select("notEqual")
+        .select("notEqual", {force: true})
         .get('[data-tests-id="searchRight"]')
-        .type("searchRight")
+        .type("searchRight", {force: true})
         .get('[data-tests-id="updatesKey"]')
-        .type("updatesKey")
+        .type("updatesKey", {force: true})
         .get('[data-tests-id="updatesValue"]')
-        .type("updatesValue")
+        .type("updatesValue", {force: true})
         .get('[data-tests-id="radioEnrich"]')
         .click()
         .get('[data-tests-id="searchFieldValue"]')
-        .type("searchFieldValue")
+        .type("searchFieldValue", {force: true})
         .get('[data-tests-id="searchPrefix"]')
-        .type("searchPrefix");
+        .type("searchPrefix", {force: true});
     });
     it("add string transform action ", () => {
       cy
@@ -1142,9 +1226,7 @@ describe("Rule engine - E2E test flow with mock", () => {
       cy.server();
       cy.route({
         method: "GET",
-        url: `${Cypress.env(
-          "backendUrl"
-        )}/rule-editor/rule/6d436c07-8006-4335-8c84-d65b4740f8d6/map/n.1517823219961.0/Type1`,
+        url: `${Cypress.env("backendUrl")}/rule-editor/rule/**/**/**/**`,
         response: "fixture:ruleEngineLoadServerReplaceText"
       });
       cy.httpGenerateMappingRulesFileName();
@@ -1174,9 +1256,7 @@ describe("Rule engine - E2E test flow with mock", () => {
       cy.server();
       cy.route({
         method: "GET",
-        url: `${Cypress.env(
-          "backendUrl"
-        )}/rule-editor/rule/6d436c07-8006-4335-8c84-d65b4740f8d6/map/n.1517823219961.0/Type1`,
+        url: `${Cypress.env("backendUrl")}/rule-editor/rule/**/**/**/**`,
         response: "fixture:ruleEngineLoadServerClear"
       });
       cy.httpGenerateMappingRulesFileName();
@@ -1200,9 +1280,7 @@ describe("Rule engine - E2E test flow with mock", () => {
       cy.server();
       cy.route({
         method: "GET",
-        url: `${Cypress.env(
-          "backendUrl"
-        )}/rule-editor/rule/6d436c07-8006-4335-8c84-d65b4740f8d6/map/n.1517823219961.0/Type1`,
+        url: `${Cypress.env("backendUrl")}/rule-editor/rule/**/**/**/**`,
         response: "fixture:ruleEngineLoadServerCopy"
       });
       cy.httpGenerateMappingRulesFileName();
@@ -1286,7 +1364,7 @@ describe("Rule engine - E2E test flow with mock", () => {
           .click()
           .get(".toast-container")
           .should("be.visible")
-          .get(".map-setting-list > form > #Type1 > input")
+          .get(".map-setting-list > form > #mappingType > input")
           .should("be.visible")
           .and("have.value", translateValue());
       });
