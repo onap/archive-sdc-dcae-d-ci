@@ -1,3 +1,5 @@
 .DS_Store
 test/src/.Trash-0/
 test/src/cypress/videos/
+yarn-error.log
+
