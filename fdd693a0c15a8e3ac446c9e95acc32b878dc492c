@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_f23f01b4",
+        "filename": "cypress-docker/test/src/yarn-error.log",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1341
+      },
+      "writtenOn": "2018-09-25T07:18:24Z",
+      "side": 1,
+      "message": "Add this file to git ignore file if it\u0027s not needed in the source control",
+      "revId": "fdd693a0c15a8e3ac446c9e95acc32b878dc492c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
