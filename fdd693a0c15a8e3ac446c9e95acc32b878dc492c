@@ -16,6 +16,24 @@
       "revId": "fdd693a0c15a8e3ac446c9e95acc32b878dc492c",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_4125c15a",
+        "filename": "cypress-docker/test/src/yarn-error.log",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 69
+      },
+      "writtenOn": "2018-09-25T20:56:31Z",
+      "side": 1,
+      "message": "done. next time use please add :)",
+      "parentUuid": "1a76adc5_f23f01b4",
+      "revId": "fdd693a0c15a8e3ac446c9e95acc32b878dc492c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
