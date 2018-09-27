@@ -235,8 +235,23 @@ public class DcaeRestClient extends BaseRestUtils {
 		return sendGet(url, designerDefaultId, new SingletonMap<>(HttpHeaderEnum.ACCEPT.getValue(), "application/octet-stream"));
 	}
 
-	public static RestResponse importRules(String vfcmtUuid, String dcaeCompName, String nid, String configParam, String request) throws IOException {
-		String url = getApiUrl(String.format("/rule-editor/import/%s/%s/%s/%s", vfcmtUuid, dcaeCompName, nid, configParam));
+	public static RestResponse importRules(String vfcmtUuid, String dcaeCompName, String nid, String configParam, String request, boolean supportGroups) throws IOException {
+		String url = getApiUrl(String.format("/rule-editor/import/%s/%s/%s/%s/%s", vfcmtUuid, dcaeCompName, nid, configParam, supportGroups));
+		return sendPost(url, request, designerDefaultId, "application/json");
+	}
+
+	public static RestResponse importPhase(String request) throws IOException {
+		String url = getApiUrl("/rule-editor/importPhase");
+		return sendPost(url, request, designerDefaultId, "application/json");
+	}
+
+	public static RestResponse applyFilter(String request) throws IOException {
+		String url = getApiUrl("/rule-editor/applyFilter");
+		return sendPost(url, request, designerDefaultId, "application/json");
+	}
+
+	public static RestResponse deleteFilter(String request) throws IOException {
+		String url = getApiUrl("/rule-editor/deleteFilter");
 		return sendPost(url, request, designerDefaultId, "application/json");
 	}
 

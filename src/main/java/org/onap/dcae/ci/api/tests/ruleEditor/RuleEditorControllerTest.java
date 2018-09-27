@@ -10,9 +10,7 @@ import org.onap.dcae.ci.entities.RestResponse;
 import org.onap.dcae.ci.entities.rule_editor.SaveRuleError;
 import org.onap.dcae.ci.report.Report;
 import org.onap.dcae.ci.utilities.DcaeRestClient;
-import org.onap.sdc.dcae.composition.restmodels.ruleeditor.MappingRules;
-import org.onap.sdc.dcae.composition.restmodels.ruleeditor.Rule;
-import org.onap.sdc.dcae.composition.restmodels.ruleeditor.TranslateRequest;
+import org.onap.sdc.dcae.composition.restmodels.ruleeditor.*;
 import org.onap.sdc.dcae.composition.services.Artifact;
 import org.onap.sdc.dcae.composition.util.DcaeBeConstants;
 import org.onap.sdc.dcae.composition.vfcmt.Vfcmt;
@@ -71,9 +69,7 @@ public class RuleEditorControllerTest extends DcaeRestBaseTest {
         Vfcmt vfcmt = createVfcmt();
         String name = vfcmt.getName();
         saveCompositionAndFirstRuleSuccess(vfcmt, "map", "map", "param1", ruleRequestBody);
-        TranslateRequest request = new TranslateRequest(vfcmt.getUuid(),"map", "map", "param1", null);
-        request.setPublishPhase("map_publish");
-        request.setEntryPhase("foi_map");
+        TranslateRequest request = new TranslateRequest(vfcmt.getUuid(),"map", "map", "param1", null, "foi_map", "map_publish");
         RestResponse res = DcaeRestClient.translateRules(gson.toJson(request));
         Report.log(Status.INFO, "translateRules response= "+res);
         assertThat(res.getStatusCode()).isEqualTo(200);
@@ -98,13 +94,22 @@ public class RuleEditorControllerTest extends DcaeRestBaseTest {
         Vfcmt vfcmt = createVfcmt();
         String name = vfcmt.getName();
         saveCompositionAndFirstRuleSuccess(vfcmt, "map", "map", "param1", ruleRequestBody);
-        TranslateRequest request = new TranslateRequest(vfcmt.getUuid(), "map", "map", "param1", notifyOid);
-        request.setEntryPhase("snmp_map");
-        request.setPublishPhase("snmp_publish");
-        RestResponse res = DcaeRestClient.translateRules(gson.toJson(request));
+        //1810 apply global filter
+		String filter = "{id:idc,level:0,name:elvis,left:\"${notify OID}\",operator:startswith,right:["+notifyOid+"]}";
+		BaseCondition condition = gson.fromJson(filter, BaseCondition.class);
+		ApplyFilterRequest request = new ApplyFilterRequest(vfcmt.getUuid(), "map", "map", "param1", null, "snmp_map", "snmp_publish", condition);
+		String requestBody = new Gson().toJson(request);
+		RestResponse res = DcaeRestClient.applyFilter(requestBody);
+		assertThat(res.getStatusCode()).isEqualTo(200);
+        res = DcaeRestClient.translateRules(requestBody);
         Report.log(Status.INFO, "translateRules response= "+res);
         assertThat(res.getStatusCode()).isEqualTo(200);
         assertThat(res.getResponse()).isEqualTo(String.format(expectedTranslation, name, name, name));
+        res = DcaeRestClient.deleteFilter(requestBody);
+		assertThat(res.getStatusCode()).isEqualTo(200);
+		res = DcaeRestClient.translateRules(requestBody);
+		assertThat(res.getStatusCode()).isEqualTo(200);
+		assertThat(res.getResponse()).isNotEqualTo(String.format(expectedTranslation, name, name, name));
     }
 
 	@Test
@@ -137,9 +142,7 @@ public class RuleEditorControllerTest extends DcaeRestBaseTest {
 		String thirdRulePhase1 = "{groupId:group_3,phase:phase_1,description:newRule,actions:[{actionType:\"Clear NSF\",id:id86,from:{state:closed,values:[{value:single_input}]}},{actionType:\"hp metric\",id:7788876,selectedHpMetric:xxxxxx}]}";
 		res = DcaeRestClient.saveRule(vfcmt.getUuid(), "map", "map", "param1", thirdRulePhase1);
 		assertThat(res.getStatusCode()).isEqualTo(200);
-		TranslateRequest request = new TranslateRequest(vfcmt.getUuid(),"map", "map", "param1", null);
-		request.setPublishPhase("map_publish");
-		request.setEntryPhase("foi_map");
+		TranslateRequest request = new TranslateRequest(vfcmt.getUuid(),"map", "map", "param1", null, "foi_map", "map_publish");
 		res = DcaeRestClient.translateRules(gson.toJson(request));
 		Report.log(Status.INFO, "translateRules response= "+res);
 		assertThat(res.getStatusCode()).isEqualTo(200);
@@ -294,14 +297,14 @@ public class RuleEditorControllerTest extends DcaeRestBaseTest {
 		// get all rules should return both
 		assertThat(actualRules.getRules()).hasSize(2);
 		assertThat(actualRules.getRules().keySet()).containsOnly(uid1, uid2);
-		// delete a rule
+		// delete a group of rules
 		res = DcaeRestClient.deleteGroupOfRules(vfcmt.getUuid(),"map", "map", "param1", "group_0");
 		Report.log(Status.INFO, "deleteGroup response= "+res);
 		assertThat(res.getStatusCode()).isEqualTo(200);
 		// no more rules - artifact should be deleted
 		String expectedArtifactName = "map_map_param1_MappingRules.json";
 		Artifact savedArtifact = fetchVfcmtArtifactMetadataByName(vfcmt.getUuid(), expectedArtifactName);
-		Report.log(Status.INFO, "savedArtifact= "+savedArtifact);
+		Report.log(Status.INFO, "save6dArtifact= "+savedArtifact);
 		assertThat(savedArtifact).isNull();
 		// get rules should return empty
 		res = DcaeRestClient.getRules(vfcmt.getUuid(),"map", "map", "param1");
@@ -430,7 +433,7 @@ public class RuleEditorControllerTest extends DcaeRestBaseTest {
 
     @Test
     public void translateWithoutPhasesFailureTest() throws Exception {
-    	TranslateRequest translateRequest = new TranslateRequest("someId","map", "map", "param1", "xxx");
+    	TranslateRequest translateRequest = new TranslateRequest("someId","map", "map", "param1", "xxx", "", "");
         String expectedError = "{\"requestError\":{\"serviceException\":{\"messageId\":\"SVC6116\",\"text\":\"Translation failed. Reason: %1\",\"variables\":[\"please enter valid request parameters\"],\"formattedErrorMessage\":\"Translation failed. Reason: please enter valid request parameters\"}},\"notes\":\"\"}";
         RestResponse res = DcaeRestClient.translateRules(gson.toJson(translateRequest));
         assertThat(res.getStatusCode()).isEqualTo(400);
@@ -506,7 +509,7 @@ public class RuleEditorControllerTest extends DcaeRestBaseTest {
 		assertThat(existingTargets[0]).isEqualTo(param1);
     	Rule rule = gson.fromJson(ruleRequestBody, Rule.class);
 		MappingRules inputRules = new MappingRules(rule);
-		res = DcaeRestClient.importRules(vfcmt.getUuid(), dcaeCompName, nid, param2, new Gson().toJson(inputRules));
+		res = DcaeRestClient.importRules(vfcmt.getUuid(), dcaeCompName, nid, param2, new Gson().toJson(inputRules), false);
 		assertThat(res.getStatusCode()).isEqualTo(200);
 		Report.log(Status.INFO, "verifying that after import success rule definition exists for both 'param1' and 'param2'");
 		res = DcaeRestClient.getExistingRuleTargets(vfcmt.getUuid(),dcaeCompName,nid);
