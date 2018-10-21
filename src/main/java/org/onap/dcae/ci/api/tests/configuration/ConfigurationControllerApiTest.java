@@ -1,7 +1,6 @@
 package org.onap.dcae.ci.api.tests.configuration;
 
 import com.aventstack.extentreports.Status;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.onap.dcae.ci.api.tests.DcaeRestBaseTest;
 import org.onap.dcae.ci.entities.RestResponse;

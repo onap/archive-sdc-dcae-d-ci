@@ -1,7 +1,7 @@
 // functionality
 function sdcIsOwnerFalse() {
   cy.visit(
-    "home?userId=cs0008&userRole=DESIGNER&displayType=context&contextType=SERVICES&uu" +
+    "home?userId=ym903w&userRole=DESIGNER&displayType=context&contextType=SERVICES&uu" +
       "id=06c7d927-4e2f-47e1-a29d-b6ed229ebc0a&lifecycleState=NOT_CERTIFIED_CHECKOUT&is" +
       "Owner=false&version=0.1"
   );
@@ -9,7 +9,7 @@ function sdcIsOwnerFalse() {
 
 function sdcUserNotCheckout() {
   cy.visit(
-    "home?userId=cs0008&userRole=DESIGNER&displayType=context&contextType=SERVICES&uu" +
+    "home?userId=ym903w&userRole=DESIGNER&displayType=context&contextType=SERVICES&uu" +
       "id=06c7d927-4e2f-47e1-a29d-b6ed229ebc0a&lifecycleState=READY_FOR_CERTIFICATION&i" +
       "sOwner=true&version=0.1"
   );
@@ -17,7 +17,7 @@ function sdcUserNotCheckout() {
 
 function homePage() {
   cy.visit(
-    "home?userId=cs0008&userRole=DESIGNER&displayType=context&contextType=SERVICES&uu" +
+    "home?userId=ym903w&userRole=DESIGNER&displayType=context&contextType=SERVICES&uu" +
       "id=06c7d927-4e2f-47e1-a29d-b6ed229ebc0a&lifecycleState=NOT_CERTIFIED_CHECKOUT&is" +
       "Owner=true&version=0.1"
   );
@@ -25,7 +25,7 @@ function homePage() {
 
 function homePageCertified() {
   cy.visit(
-    "home?userId=cs0008&userRole=DESIGNER&displayType=context&contextType=SERVICES&uu" +
+    "home?userId=ym903w&userRole=DESIGNER&displayType=context&contextType=SERVICES&uu" +
       "id=06c7d927-4e2f-47e1-a29d-b6ed229ebc0a&lifecycleState=CERTIFIED_CHECKOUT&isOwne" +
       "r=true&version=0.1"
   );
@@ -37,9 +37,7 @@ function deleteMonitoringComponent() {
     .route({
       method: "DELETE",
       url:
-        Cypress.env("backendUrl") +
-        "/SERVICES/06c7d927-4e2f-47e1-a29d-b6ed229ebc0a/vfb53dd48360ff4fa2b66e6ceb1961bd9" +
-        "b0/cba37ed8-94e1-406f-b4f5-b5edbc31ac85/deleteVfcmtReference",
+        Cypress.env("backendUrl") + "/SERVICES/**/**/**/deleteVfcmtReference",
       response: "{}"
     })
     .as("deleteMonitoringComponent");
@@ -50,10 +48,7 @@ function saveMonitoringComponent() {
     .server()
     .route({
       method: "POST",
-      url:
-        Cypress.env("backendUrl") +
-        "/SERVICES/06c7d927-4e2f-47e1-a29d-b6ed229ebc0a/vfb53dd48360ff4fa2b66e6ceb1961bd9" +
-        "b0/saveComposition/cba37ed8-94e1-406f-b4f5-b5edbc31ac85",
+      url: Cypress.env("backendUrl") + "/SERVICES/**/**/saveComposition/**",
       response: "{}"
     })
     .as("saveMonitoringComponent");
@@ -64,10 +59,7 @@ function submitMonitoringComponent() {
     .server()
     .route({
       method: "POST",
-      url:
-        Cypress.env("backendUrl") +
-        "/SERVICES/createBluePrint/cba37ed8-94e1-406f-b4f5-b5edbc31ac85/06c7d927-4e2f-47e" +
-        "1-a29d-b6ed229ebc0a/vfb53dd48360ff4fa2b66e6ceb1961bd9b0/",
+      url: Cypress.env("backendUrl") + "/SERVICES/createBluePrint/**/**/**/",
       response: "{}"
     })
     .as("submitMonitoringComponent");
@@ -79,9 +71,7 @@ function deleteMonitoringComponentWithBlueprint() {
     .route({
       method: "DELETE",
       url:
-        Cypress.env("backendUrl") +
-        "/SERVICES/06c7d927-4e2f-47e1-a29d-b6ed229ebc0a/dump0/64471437-8feb-40d9-a8b0-940" +
-        "7a81dd5c0/deleteVfcmtReference",
+        Cypress.env("backendUrl") + "/SERVICES/**/**/**/deleteVfcmtReference",
       response: "{}"
     })
     .as("deleteMonitoringComponentWithBlueprint");
@@ -92,12 +82,11 @@ function getMCList() {
     .server()
     .route({
       method: "GET",
-      url:
-        Cypress.env("backendUrl") +
-        "/SERVICES/06c7d927-4e2f-47e1-a29d-b6ed229ebc0a/0.1/monitoringComponents",
-      response: "fixture:monitoringComponentsMock"
+      url: Cypress.env("backendUrl") + "/SERVICES/**/**/monitoringComponents",
+      response: "fixture:McTable"
     })
     .as("mcList");
+  // monitoringComponentsMock
 }
 
 function getMC() {
@@ -105,9 +94,7 @@ function getMC() {
     .server()
     .route({
       method: "GET",
-      url:
-        Cypress.env("backendUrl") +
-        "/getMC/cba37ed8-94e1-406f-b4f5-b5edbc31ac85",
+      url: Cypress.env("backendUrl") + "/getMC/**",
       response: "fixture:getMCMock"
     })
     .as("getMC");
@@ -118,9 +105,7 @@ function getMCListEmpty() {
     .server()
     .route({
       method: "GET",
-      url:
-        Cypress.env("backendUrl") +
-        "/SERVICES/06c7d927-4e2f-47e1-a29d-b6ed229ebc0a/0.1/monitoringComponents",
+      url: Cypress.env("backendUrl") + "/SERVICES/**/**/monitoringComponents",
       response: "{}"
     })
     .as("mcListEmpty");

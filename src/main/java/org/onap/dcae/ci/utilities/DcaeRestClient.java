@@ -169,9 +169,23 @@ public class DcaeRestClient extends BaseRestUtils {
     public static RestResponse getComposition(String componentId) throws IOException{
         return sendGet(getApiUrl("/getComposition/"+ componentId), designerDefaultId);
     }
+
     public static RestResponse submitComposition(String componentId, String serviceUuid, String vnfiName, String monitoringType) throws IOException{
         return sendPost(getApiUrl("/createBluePrint/"+ componentId +"/"+ serviceUuid +"/"+ UrlEscapers.urlFragmentEscaper().escape(vnfiName) + "/"+  UrlEscapers.urlFragmentEscaper().escape(monitoringType)), "" ,designerDefaultId, "application/json");
     }
+
+	public static RestResponse revertToSubmittedComposition(String serviceUuid, String vnfiName, String vfcmtUuid, String submittedUuid) throws IOException{
+		return sendPost(getApiUrl("/service/" + serviceUuid +"/"+ UrlEscapers.urlFragmentEscaper().escape(vnfiName) + "/"+  vfcmtUuid + "/revert/" + submittedUuid), "" ,designerDefaultId, "application/json");
+	}
+
+	public static RestResponse deleteMcReferenceAndBP(String mcName, String serviceUuid, String vnfiName, String vfcmtUuid) throws IOException{
+		return sendDelete(getApiUrl("/service/" + mcName + "/" + serviceUuid +"/"+ UrlEscapers.urlFragmentEscaper().escape(vnfiName) + "/"+  vfcmtUuid + "/deleteVfcmtReference"), designerDefaultId);
+	}
+
+	public static RestResponse deleteMcReferenceAndBP(String mcName, String serviceUuid, String vnfiName, String vfcmtUuid, String submittedUuid) throws IOException{
+		return sendDelete(getApiUrl(String.format("/service/%s/%s/%s/%s/deleteVfcmtReference/%s", mcName, serviceUuid, UrlEscapers.urlFragmentEscaper().escape(vnfiName), vfcmtUuid, submittedUuid)), designerDefaultId);
+	}
+
 
     /* Life Cycle */
 

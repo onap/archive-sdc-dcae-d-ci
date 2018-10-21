@@ -1,0 +1,114 @@
+{
+  "monitoringComponents": [
+    {
+      "uuid": "01136abe-26d9-4fb0-98e7-cd652a51ff7b",
+      "name": "importTest",
+      "version": "0.3",
+      "lastUpdaterUserId": "ym903w",
+      "description": "xx",
+      "lifecycleState": "NOT_CERTIFIED_CHECKIN",
+      "status": "Not Submitted",
+      "vfiName": "enrich0",
+      "invariantUuid": "91ca20b4-4cf9-4b12-9a0a-b592f60b9e09",
+      "submittedUuid": null
+    },
+    {
+      "uuid": "942cdc80-a541-4d7f-b3ec-c0d3c84ab446",
+      "name": "testImportInGroup",
+      "version": "0.17",
+      "lastUpdaterUserId": "jh0003",
+      "description": "xx",
+      "lifecycleState": "NOT_CERTIFIED_CHECKOUT",
+      "status": "Not Submitted",
+      "vfiName": "enrich0",
+      "invariantUuid": "39fd85b6-58f5-45ab-9256-7989d63a611b",
+      "submittedUuid": null
+    },
+    {
+      "uuid": "01e17e43-cc2e-4762-9822-c97c69394e30",
+      "name": "ron",
+      "version": "0.9",
+      "lastUpdaterUserId": "ym903w",
+      "description": "xx",
+      "lifecycleState": "NOT_CERTIFIED_CHECKIN",
+      "status": "Not Submitted",
+      "vfiName": "enrich0",
+      "invariantUuid": "f99ebc8a-d16c-4d56-a0fa-8b1f3d2b1977",
+      "submittedUuid": null
+    },
+    {
+      "uuid": "79a4d5f7-783e-454c-883f-caad0100266b",
+      "name": "HpT",
+      "version": "0.25",
+      "lastUpdaterUserId": "ym903w",
+      "description": "xxx",
+      "lifecycleState": "NOT_CERTIFIED_CHECKOUT",
+      "status": "Not Submitted",
+      "vfiName": "enrich0",
+      "invariantUuid": "c1a57eac-6068-4eed-9b32-0641676683e7",
+      "submittedUuid": null
+    },
+    {
+      "uuid": "b497430a-e414-4fbd-aa0a-d936deb39297",
+      "name": "hptest1",
+      "version": "0.2",
+      "lastUpdaterUserId": "ym903w",
+      "description": "xxx",
+      "lifecycleState": "NOT_CERTIFIED_CHECKIN",
+      "status": "Not Submitted",
+      "vfiName": "enrich0",
+      "invariantUuid": "88017fc9-0480-4abb-9c72-bd4f213bdd18",
+      "submittedUuid": null
+    },
+    {
+      "uuid": "d2a361f5-e000-4ffb-a3f7-e90d2c1ca76d",
+      "name": "vosk",
+      "version": "0.4",
+      "lastUpdaterUserId": "ym903w",
+      "description": "xxx",
+      "lifecycleState": "NOT_CERTIFIED_CHECKOUT",
+      "status": "Not Submitted",
+      "vfiName": "enrich0",
+      "invariantUuid": "aa14a42f-2346-458d-8c03-7f44a5e9df5b",
+      "submittedUuid": null
+    },
+    {
+      "uuid":
+        "bff53682-4ae1-42d0-9e8f-a6f80a1f6f02/d960e45b-7fda-4421-805c-b5815d7cda5b",
+      "name": "dror",
+      "version": "1.0",
+      "lastUpdaterUserId": "ym903w",
+      "description": "xxx",
+      "lifecycleState": "CERTIFIED",
+      "status": "Submitted",
+      "vfiName": "enrich0",
+      "invariantUuid": "94543a61-41d2-4f8b-80c6-b1985a6484c6",
+      "submittedUuid": "bff53682-4ae1-42d0-9e8f-a6f80a1f6f02"
+    },
+    {
+      "uuid":
+        "8b75d1bc-35fe-4cfb-a1a9-d7c4be38c8d5/d97a7e78-2231-4c39-a12a-4a44d756f28b",
+      "name": "stone",
+      "version": "1.0",
+      "lastUpdaterUserId": "ym903w",
+      "description": "z",
+      "lifecycleState": "CERTIFIED",
+      "status": "Submitted",
+      "vfiName": "enrich0",
+      "invariantUuid": "529ddd17-527a-4421-bfa8-843f62a18e0c",
+      "submittedUuid": "8b75d1bc-35fe-4cfb-a1a9-d7c4be38c8d5"
+    },
+    {
+      "uuid": "f6523ef3-37d5-4ec4-845c-6b76697728e6",
+      "name": "gal",
+      "version": "1.4",
+      "lastUpdaterUserId": "ym903w",
+      "description": "xxx",
+      "lifecycleState": "NOT_CERTIFIED_CHECKOUT",
+      "status": "Submitted",
+      "vfiName": "enrich0",
+      "invariantUuid": "cc70a75e-c37b-498d-bf85-3416d4c13f1a",
+      "submittedUuid": "c3b47bbb-0e9a-43f3-ba04-93aa5d5d3c87"
+    }
+  ]
+}

@@ -2,7 +2,7 @@ export const buttonCreateMC = () => {
   return cy.get('button[data-tests-id="btn-create-mc"]');
 };
 export const buttonCreateMCSpan = () => {
-  return cy.get('span[data-tests-id="btn-span-create-mc"]');
+  return cy.get('[data-tests-id="btn-span-create-mc"]');
 };
 
 export const tableItems = () => {
@@ -29,7 +29,7 @@ export const popupGetCancelBtn = () => {
 };
 
 export const getMonitoringConfiguration = () => {
-  return cy.get('div[data-tests-id="tableItemsMonitoringConfiguration"]');
+  return cy.get('div[data-tests-id="editMC"]');
 };
 
 export const doHoverOverFirstLine = () => {
@@ -45,7 +45,7 @@ export const doHoverOverFirstLineMonitoringConfiguration = () => {
   return getMonitoringConfiguration();
 };
 
-const NUMBER_OF_ITEMS = 12;
+const NUMBER_OF_ITEMS = 9;
 
 const navigateButtonDisabled = () => {
   return buttonCreateMC()
@@ -82,10 +82,131 @@ describe("Home Page - E2E test flow with mock", () => {
       cy.saveMonitoringComponent();
     });
 
-    it("Edit VFCMT", () => {
-      doHoverOverFirstLineMonitoringConfiguration()
+    it("Edit VFCMT icon visablity", () => {
+      doHoverOverFirstLine();
+      cy.get('[data-tests-id="editMC"').should("be.visible");
+    });
+  });
+
+  describe("Revert Mc table item", () => {
+    beforeEach(() => {
+      cy.getMCList();
+      cy.homePage();
+      cy.getMC();
+      cy.submitMonitoringComponent();
+      cy.saveMonitoringComponent();
+    });
+
+    it("should not see revert icon on version that is lower then 1.x", () => {
+      tableItems()
         .first()
-        .click({ force: true });
+        .trigger("mouseover");
+      cy.get('[data-tests-id="revertMC"').should("not.be.visible");
+    });
+
+    it("should get revert icon on version that is above then 1.x", () => {
+      tableItems()
+        .last()
+        .click()
+        .trigger("mouseover");
+      cy.get('[data-tests-id="revertMC"]').should("be.visible");
+    });
+    it("should get revert open model", () => {
+      tableItems()
+        .last()
+        .click()
+        .trigger("mouseover");
+      cy
+        .get('[data-tests-id="revertMC"]')
+        .should("be.visible")
+        .click({ force: true })
+        .get('[data-tests-id="revert-dialog-title"]')
+        .should("contain", "Are you sure you want to revert?");
+    });
+
+    it("should get revert open model clicking on cancel should close popup", () => {
+      tableItems()
+        .last()
+        .click()
+        .trigger("mouseover");
+      cy
+        .get('[data-tests-id="revertMC"]')
+        .should("be.visible")
+        .click({ force: true })
+        .get('[data-tests-id="revert-cancel"]')
+        .click()
+        .get('[data-tests-id="revert-dialog-title"]')
+        .should("not.be.visible");
+    });
+  });
+
+  describe("View only", () => {
+    beforeEach(() => {
+      cy.getMCList();
+      cy.homePage();
+      cy.getMC();
+      cy.submitMonitoringComponent();
+      cy.saveMonitoringComponent();
+    });
+
+    it("should not see view Submitted icon in 0.x version", () => {
+      tableItems()
+        .first()
+        .click()
+        .trigger("mouseover");
+      cy.get('[data-tests-id="viewSubmitted"]').should("not.be.visible");
+    });
+    it("should see view Submitted icon in 1.x version", () => {
+      tableItems()
+        .last()
+        .click()
+        .trigger("mouseover");
+      cy.get('[data-tests-id="viewSubmitted"]').should("be.visible");
+    });
+    it("should see view Submitted status in mc data page", () => {
+      tableItems()
+        .last()
+        .click()
+        .trigger("mouseover");
+      cy
+        .get('[data-tests-id="viewSubmitted"]')
+        .should("be.visible")
+        .click()
+        .get('[data-tests-id="viewOnlyLabel"]')
+        .should("contain", "view only");
+    });
+    it("save and submit buttons need to be disabled on view only mode", () => {
+      tableItems()
+        .last()
+        .click()
+        .trigger("mouseover");
+      cy
+        .get('[data-tests-id="viewSubmitted"]')
+        .should("be.visible")
+        .click()
+        .get('[data-tests-id="save-btn"]')
+        .should("be.disabled")
+        .get('[data-tests-id="submit-btn"]')
+        .should("be.disabled");
+    });
+    it("setting inputs need to be disabled on view only mode", () => {
+      tableItems()
+        .last()
+        .click()
+        .trigger("mouseover");
+      cy
+        .get('[data-tests-id="viewSubmitted"]')
+        .should("be.visible")
+        .click()
+        .get("#ui-tabpanel-1-label")
+        .should("be.visible")
+        .click()
+        .get('[data-tests-id="setting-gear"]')
+        .first()
+        .click()
+        .get(".field-text")
+        .first()
+        .should("be.disabled");
     });
   });
 
@@ -159,17 +280,17 @@ describe("Home Page - E2E test flow with mock", () => {
     });
   });
 
-  describe("Show Info icon", () => {
-    beforeEach(() => {
-      cy.getMCList();
-      cy.homePageCertified();
-    });
-    it("Mouse hover over item, delete is not visible, info visible", () => {
-      doHoverOverFirstLine();
-      tableItemsInfoButton().should("be.visible");
-      tableItemsDeleteButton().should("not.be.visible");
-    });
-  });
+  // describe("Show Info icon", () => {
+  //   beforeEach(() => {
+  //     cy.getMCList();
+  //     cy.homePageCertified();
+  //   });
+  //   it("Mouse hover over item, delete is not visible, info visible", () => {
+  //     doHoverOverFirstLine();
+  //     tableItemsInfoButton().should("be.visible");
+  //     tableItemsDeleteButton().should("not.be.visible");
+  //   });
+  // });
 
   describe("Successfully Entry Home Page Monitoring Configuration", () => {
     beforeEach(() => {
@@ -184,7 +305,8 @@ describe("Home Page - E2E test flow with mock", () => {
         .and("be.visible")
         .and("not.be.disabled");
 
-      buttonCreateMCSpan()
+      cy
+        .get('[data-tests-id="btn-span-create-mc"]')
         .should("contain", "Add First MC")
         .and("be.visible")
         .and("not.be.disabled");

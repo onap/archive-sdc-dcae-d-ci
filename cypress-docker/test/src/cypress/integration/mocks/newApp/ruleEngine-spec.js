@@ -16,9 +16,7 @@ function verifyCopyActionNotExist(actionType) {
     .select(actionType)
     .get('button[data-tests-id="btnAddAction"]')
     .click();
-  cy
-    .get('[data-tests-id="makeCopyOfAction"]')
-    .should("not.be.visible");
+  cy.get('[data-tests-id="makeCopyOfAction"]').should("not.be.visible");
 }
 
 export const selectVersionAndTypeAndAddFirstRule = () => {
@@ -185,18 +183,14 @@ describe("Rule engine - E2E test flow with mock", () => {
       cy.httpGetDDLData();
       cy.getMCListEmpty();
       cy.homePage();
-      cy
-        .get('button[data-tests-id="btn-create-mc"]')
-        .click();
+      cy.get('button[data-tests-id="btn-create-mc"]').click();
       cy.fillNewMcForm();
       cy.httpCreateNewMc();
       cy.getPhases();
       cy.httpGenerateMappingRulesFileName();
       cy.httpTargetTree();
       cy.emptyRuleEngine("Type1");
-      cy
-        .get('button[data-tests-id="createMonitoring"]')
-        .click();
+      cy.get('button[data-tests-id="createMonitoring"]').click();
       cy
         .get("#ui-tabpanel-1-label")
         .should("contain", "map")
@@ -206,9 +200,7 @@ describe("Rule engine - E2E test flow with mock", () => {
       addCopyAction();
       cy.getLatestMcUuid();
       cy.doneSaveRule();
-      cy
-        .get('button[data-tests-id="btnDone"]')
-        .click();
+      cy.get('button[data-tests-id="btnDone"]').click();
     });
 
     it("apply filter", () => {
@@ -233,9 +225,7 @@ describe("Rule engine - E2E test flow with mock", () => {
         .click()
         .get('[data-tests-id="removeConditionNode"]')
         .click();
-      cy
-        .get('input[data-tests-id="left"]')
-        .should("not.be.visible");
+      cy.get('input[data-tests-id="left"]').should("not.be.visible");
     });
 
     it("Delete filter with button delete", () => {
@@ -255,9 +245,7 @@ describe("Rule engine - E2E test flow with mock", () => {
         .get('[data-tests-id="removeConditionNode"]')
         .click();
 
-      cy
-        .get('input[data-tests-id="left"]')
-        .should("not.be.visible");
+      cy.get('input[data-tests-id="left"]').should("not.be.visible");
     });
   });
 
@@ -342,25 +330,25 @@ describe("Rule engine - E2E test flow with mock", () => {
         .get('button[data-tests-id="btnAddAction"]')
         .click()
         .get('[data-tests-id="searchField"]')
-        .type("searchField", {force: true})
+        .type("searchField", { force: true })
         .get('[data-tests-id="searchValue"]')
-        .type("searchValue", {force: true})
+        .type("searchValue", { force: true })
         .get('[data-tests-id="searchLeft"]')
-        .type("searchLeft", {force: true})
+        .type("searchLeft", { force: true })
         .get('[data-tests-id="searchOperator"]')
-        .select("notEqual", {force: true})
+        .select("notEqual", { force: true })
         .get('[data-tests-id="searchRight"]')
-        .type("searchRight", {force: true})
+        .type("searchRight", { force: true })
         .get('[data-tests-id="updatesKey"]')
-        .type("updatesKey", {force: true})
+        .type("updatesKey", { force: true })
         .get('[data-tests-id="updatesValue"]')
-        .type("updatesValue", {force: true})
+        .type("updatesValue", { force: true })
         .get('[data-tests-id="radioEnrich"]')
         .click()
         .get('[data-tests-id="searchFieldValue"]')
-        .type("searchFieldValue", {force: true})
+        .type("searchFieldValue", { force: true })
         .get('[data-tests-id="searchPrefix"]')
-        .type("searchPrefix", {force: true});
+        .type("searchPrefix", { force: true });
     });
     it("add string transform action ", () => {
       cy
@@ -1359,6 +1347,11 @@ describe("Rule engine - E2E test flow with mock", () => {
       it("should open advanced setting when translate successfuly", () => {
         cy.get('button[data-tests-id="btnDone"]').click();
         cy.wait("@doneSaveCopyRule").httpTransalte();
+        cy
+          .get('[data-tests-id="entryPhase"]')
+          .type("x")
+          .get('[data-tests-id="publishPhase"]')
+          .type("y");
         cy
           .get('button[data-tests-id="btnTranslate"]')
           .click()

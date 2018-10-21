@@ -11,8 +11,8 @@ describe("General Page - E2E test flow with mock", () => {
 
     // it.only("Check boolean DDL with value undefined - using true, true - using
     // true and false" +     " - using false.", () => {   cy.fillNewMcForm();   cy
-    //   .get('button[data-tests-id="createMonitoring"]')     .as("createButton")
-    //  .not("[disabled]")     .should("not.contain", "Disabled");
+    // .get('button[data-tests-id="createMonitoring"]')     .as("createButton")
+    // .not("[disabled]")     .should("not.contain", "Disabled");
     // cy.httpCreateNewMcWithBooleanDDL();   cy.emptyRuleEngine("Type1");   cy
     // .get("@createButton")     .click();   cy     .get("#ui-tabpanel-1-label")
     // .should("contain", "map")     .click();   cy
@@ -22,8 +22,8 @@ describe("General Page - E2E test flow with mock", () => {
     // .get(".map-setting-list > form > #valueUndefined > select")
     // .should("have.value", "true");   cy     .get(".map-setting-list > form >
     // #valueTrue > select")     .should("have.value", "true");   cy
-    // .get(".map-setting-list > form > #valueFalse > select")
-    // .should("have.value", "false"); });
+    // .get(".map-setting-list > form > #valueFalse > select") .should("have.value",
+    // "false"); });
   });
 
   describe("Create new MC", () => {
@@ -59,6 +59,7 @@ describe("General Page - E2E test flow with mock", () => {
         .click();
       cy
         .get('button[data-tests-id="setting-gear"]')
+        .first()
         .should("be.visible")
         .first()
         .click({ multiple: true });

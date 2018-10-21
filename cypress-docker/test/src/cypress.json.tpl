@@ -1,4 +1,5 @@
 {
+  "viewportWidth": 1280,
   "chromeWebSecurity": false,
   "requestTimeout": 60000,
   "responseTimeout": 100000,
