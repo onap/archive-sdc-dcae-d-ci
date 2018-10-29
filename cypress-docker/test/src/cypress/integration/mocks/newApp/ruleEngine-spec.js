@@ -359,7 +359,7 @@ describe("Rule engine - E2E test flow with mock", () => {
         .get('[data-tests-id="startValue"]')
         .type("start")
         .get('[data-tests-id="inputTarget"]')
-        .last()
+        .first()
         .type("target")
         .get('[data-tests-id="targetCase"]')
         .type("target-case")

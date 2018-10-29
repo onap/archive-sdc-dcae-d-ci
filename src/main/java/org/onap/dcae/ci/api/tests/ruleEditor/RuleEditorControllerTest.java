@@ -63,7 +63,7 @@ public class RuleEditorControllerTest extends DcaeRestBaseTest {
                 + "{\"map\":{\"sourceVal1\":\"targetVal1\",\"sourceVal2\":\"targetVal2\"},\"field\":\"fromField\",\"toField\":\"mapTargetField\",\"default\":\"\",\"class\":\"MapAlarmValues\"},"
                 + "{\"fromFormat\":\"inputFormat\",\"fromTz\":\"XYZ\",\"toField\":\"dateFormatterTarget\",\"toFormat\":\"outputFormat\",\"toTz\":\"UVW\",\"value\":\"${dateFormatterFrom}\",\"class\":\"DateFormatter\"},"
                 + "{\"title\":\"some log title\",\"class\":\"LogEvent\"},{\"field\":\"fromField\",\"find\":\"findText\",\"replace\":\"replacement\",\"class\":\"ReplaceText\"},{\"reservedFields\":[\"single_input\"],\"class\":\"ClearNoneStandardFields\"},"
-				+ "{\"updates\":{\"parserType\":\"xxxxxxx\"},\"class\":\"Set\"},{\"targetCase\":\"same\",\"trim\":\"true\",\"toField\":\"targetField\",\"class\":\"StringTransform\"},"
+				+ "{\"updates\":{\"parserType\":\"xxxxxxx\"},\"class\":\"Set\"},{\"targetCase\":\"same\",\"trim\":\"true\",\"toField\":\"targetField\",\"value\":\"source\",\"class\":\"StringTransform\"},"
 				+ "{\"searchField\":\"sourceToSearch\",\"searchValue\":\"${whatever}\",\"searchFilter\":{\"field\":\"leftO\",\"values\":[\"rightO\"],\"class\":\"OneOf\"},\"enrichFields\":[\"e_field1\",\"e_field2\"],\"enrichPrefix\":\"e_prefix\",\"class\":\"TopoSearch\"},"
 				+ "{\"searchField\":\"sourceToSearch\",\"searchValue\":\"${whatever}\",\"updates\":{\"firstKey\":\"firstValue\",\"secondKey\":\"secondValue\",\"isEnriched\":true},\"class\":\"TopoSearch\"},{\"phase\":\"map_publish\",\"class\":\"RunPhase\"}]}]}";
         Vfcmt vfcmt = createVfcmt();
@@ -88,7 +88,7 @@ public class RuleEditorControllerTest extends DcaeRestBaseTest {
                 + "{\"map\":{\"sourceVal1\":\"targetVal1\",\"sourceVal2\":\"targetVal2\"},\"field\":\"fromField\",\"toField\":\"mapTargetField\",\"default\":\"\",\"class\":\"MapAlarmValues\"},"
                 + "{\"fromFormat\":\"inputFormat\",\"fromTz\":\"XYZ\",\"toField\":\"dateFormatterTarget\",\"toFormat\":\"outputFormat\",\"toTz\":\"UVW\",\"value\":\"${dateFormatterFrom}\",\"class\":\"DateFormatter\"},"
                 + "{\"title\":\"some log title\",\"class\":\"LogEvent\"},{\"field\":\"fromField\",\"find\":\"findText\",\"replace\":\"replacement\",\"class\":\"ReplaceText\"},{\"reservedFields\":[\"single_input\"],\"class\":\"ClearNoneStandardFields\"},"
-				+ "{\"updates\":{\"parserType\":\"xxxxxxx\"},\"class\":\"Set\"},{\"targetCase\":\"same\",\"trim\":\"true\",\"toField\":\"targetField\",\"class\":\"StringTransform\"},"
+				+ "{\"updates\":{\"parserType\":\"xxxxxxx\"},\"class\":\"Set\"},{\"targetCase\":\"same\",\"trim\":\"true\",\"toField\":\"targetField\",\"value\":\"source\",\"class\":\"StringTransform\"},"
 				+ "{\"searchField\":\"sourceToSearch\",\"searchValue\":\"${whatever}\",\"searchFilter\":{\"field\":\"leftO\",\"values\":[\"rightO\"],\"class\":\"OneOf\"},\"enrichFields\":[\"e_field1\",\"e_field2\"],\"enrichPrefix\":\"e_prefix\",\"class\":\"TopoSearch\"},"
 				+ "{\"searchField\":\"sourceToSearch\",\"searchValue\":\"${whatever}\",\"updates\":{\"firstKey\":\"firstValue\",\"secondKey\":\"secondValue\",\"isEnriched\":true},\"class\":\"TopoSearch\"},{\"phase\":\"snmp_publish\",\"class\":\"RunPhase\"}]}]}";
         Vfcmt vfcmt = createVfcmt();
@@ -123,10 +123,10 @@ public class RuleEditorControllerTest extends DcaeRestBaseTest {
 				+ "{\"map\":{\"sourceVal1\":\"targetVal1\",\"sourceVal2\":\"targetVal2\"},\"field\":\"fromField\",\"toField\":\"mapTargetField\",\"default\":\"\",\"class\":\"MapAlarmValues\"},"
 				+ "{\"fromFormat\":\"inputFormat\",\"fromTz\":\"XYZ\",\"toField\":\"dateFormatterTarget\",\"toFormat\":\"outputFormat\",\"toTz\":\"UVW\",\"value\":\"${dateFormatterFrom}\",\"class\":\"DateFormatter\"},"
 				+ "{\"title\":\"some log title\",\"class\":\"LogEvent\"},{\"field\":\"fromField\",\"find\":\"findText\",\"replace\":\"replacement\",\"class\":\"ReplaceText\"},{\"reservedFields\":[\"single_input\"],\"class\":\"ClearNoneStandardFields\"},"
-				+ "{\"updates\":{\"parserType\":\"xxxxxxx\"},\"class\":\"Set\"},{\"targetCase\":\"same\",\"trim\":\"true\",\"toField\":\"targetField\",\"class\":\"StringTransform\"},"
+				+ "{\"updates\":{\"parserType\":\"xxxxxxx\"},\"class\":\"Set\"},{\"targetCase\":\"same\",\"trim\":\"true\",\"toField\":\"targetField\",\"value\":\"source\",\"class\":\"StringTransform\"},"
 				+ "{\"searchField\":\"sourceToSearch\",\"searchValue\":\"${whatever}\",\"searchFilter\":{\"field\":\"leftO\",\"values\":[\"rightO\"],\"class\":\"OneOf\"},\"enrichFields\":[\"e_field1\",\"e_field2\"],\"enrichPrefix\":\"e_prefix\",\"class\":\"TopoSearch\"},"
 				+ "{\"searchField\":\"sourceToSearch\",\"searchValue\":\"${whatever}\",\"updates\":{\"firstKey\":\"firstValue\",\"secondKey\":\"secondValue\",\"isEnriched\":true},\"class\":\"TopoSearch\"},"
-				+ "{\"phase\":\"phase_2\",\"class\":\"RunPhase\"}]},{\"phase\":\"phase_2\",\"processors\":[{\"targetCase\":\"same\",\"trim\":\"true\",\"toField\":\"targetField\",\"class\":\"StringTransform\"},"
+				+ "{\"phase\":\"phase_2\",\"class\":\"RunPhase\"}]},{\"phase\":\"phase_2\",\"processors\":[{\"targetCase\":\"same\",\"trim\":\"true\",\"toField\":\"targetField\",\"value\":\"source\",\"class\":\"StringTransform\"},"
 		        + "{\"searchField\":\"sourceToSearch\",\"searchValue\":\"${whatever}\",\"searchFilter\":{\"field\":\"leftO\",\"values\":[\"rightO\"],\"class\":\"OneOf\"},\"enrichFields\":[\"e_field1\",\"e_field2\"],"
 		        + "\"enrichPrefix\":\"e_prefix\",\"class\":\"TopoSearch\"}]},{\"phase\":\"phase_1\",\"processors\":[{\"reservedFields\":[\"single_input\"],\"class\":\"ClearNoneStandardFields\"},{\"updates\":{\"parserType\":\"xxxxxx\"},\"class\":\"Set\"},"
                 + "{\"phase\":\"map_publish\",\"class\":\"RunPhase\"}]}]}";
