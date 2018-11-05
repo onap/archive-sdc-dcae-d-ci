@@ -85,13 +85,10 @@ public class ExtentManager {
 
 	private static void createVersionsInfoFile(String path, String file, String envData, String suiteName) {
 		File myFoo = new File(path + file);
-		FileOutputStream fooStream;
-		try {
-			fooStream = new FileOutputStream(myFoo, false);
+		try(FileOutputStream fooStream = new FileOutputStream(myFoo, false)) {
 			String versions = ("env=\"" + envData + "\"\n" + "suiteName=\"" + suiteName + "\"\n");
 			byte[] myBytes = versions.getBytes();
 			fooStream.write(myBytes);
-			fooStream.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
