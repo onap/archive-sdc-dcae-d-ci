@@ -14,7 +14,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "",
   "dependencies": {
     "cypress": "^2.1.0",
     "cypress-testing-library": "^2.2.0",
