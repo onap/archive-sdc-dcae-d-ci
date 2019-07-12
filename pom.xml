@@ -22,7 +22,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <nexus.proxy>https://nexus.onap.org</nexus.proxy>
-        <staging.profile.id>176c31dfe190a</staging.profile.id>
         <httpclient.version>4.5.5</httpclient.version>
         <snakeyaml.version>1.21</snakeyaml.version>
         <slf4j.version>1.7.25</slf4j.version>
@@ -186,18 +185,6 @@
                         <version>2.10</version>
                     </dependency>
                 </dependencies>
-            </plugin>
-            <!-- Staging Plugin -->
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.7</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <nexusUrl>${nexus.proxy}</nexusUrl>
-                    <stagingProfileId>${staging.profile.id}</stagingProfileId>
-                    <serverId>ecomp-staging</serverId>
-                </configuration>
             </plugin>
         </plugins>
     </build>
