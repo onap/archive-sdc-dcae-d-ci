@@ -1,0 +1,8 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Vasyl Razinkov <vasyl.razinkov@est.tech>
+Code-Review+2: Yuli Shlosberg <ys9693@att.com>
+Submitted-by: Yuli Shlosberg <ys9693@att.com>
+Submitted-at: Sun, 15 Mar 2020 17:27:03 +0000
+Reviewed-on: https://gerrit.onap.org/r/c/sdc/dcae-d/ci/+/103422
+Project: sdc/dcae-d/ci
+Branch: refs/heads/master
